@@ -87,8 +87,8 @@
         android:background="@android:color/transparent"
         android:scaleType="fitXY"
         android:src="@drawable/dew_icon"
-        tools:layout_editor_absoluteX="-1dp"
-        tools:layout_editor_absoluteY="659dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/homework_button"
