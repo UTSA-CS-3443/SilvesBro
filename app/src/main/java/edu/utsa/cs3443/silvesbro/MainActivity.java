@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         samHeadTop = findViewById(R.id.sam_head_top);
 
         // up and down motion placeholder
-        ObjectAnimator talkAnim = ObjectAnimator.ofFloat(samHeadTop, "translationY", 0f, -20f, 0f);
+        ObjectAnimator talkAnim = ObjectAnimator.ofFloat(samHeadTop, "translationY", 0f, -40f, 0f);
         talkAnim.setDuration(300);
         talkAnim.setRepeatMode(ValueAnimator.RESTART);
         talkAnim.setRepeatCount(ValueAnimator.INFINITE);
