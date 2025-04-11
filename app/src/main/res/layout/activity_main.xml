@@ -51,4 +51,67 @@
         android:layout_marginStart="19dp"
         />
 
+    <ImageButton
+        android:id="@+id/settings_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
+        android:src="@drawable/settings_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="16dp" />
+
+    <!-- Timer Icon - Top Right, below wardrobe -->
+    <ImageButton
+        android:id="@+id/timer_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
+        android:src="@drawable/timer_icon"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp" />
+
+    <!-- Dew Icon - Bottom Left -->
+    <ImageButton
+        android:id="@+id/dew_button"
+        android:layout_width="97dp"
+        android:layout_height="81dp"
+        android:layout_margin="16dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/dew_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Homework Icon - Bottom Right -->
+    <ImageButton
+        android:id="@+id/homework_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
+        android:src="@drawable/homework_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="16dp" />
+
+    <!-- Wardrobe Icon - Above Homework -->
+    <ImageButton
+        android:id="@+id/wardrobe_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
+        android:src="@drawable/wardrobe_icon"
+        app:layout_constraintBottom_toTopOf="@id/homework_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
