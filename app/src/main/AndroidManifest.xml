@@ -12,6 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SilvesBro"
         tools:targetApi="31">
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".TaskListActivity" />
+        <activity android:name=".TimerActivity" />
+        <activity android:name=".WardrobeActivity" />
+        <activity android:name=".CreditsActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

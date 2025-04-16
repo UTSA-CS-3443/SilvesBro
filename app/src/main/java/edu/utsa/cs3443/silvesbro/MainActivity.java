@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +31,30 @@ public class MainActivity extends AppCompatActivity {
         ImageButton timerButton = findViewById(R.id.bt_timer);
         ImageButton wardrobeButton = findViewById(R.id.bt_wardrobe);
 
+        settingsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
+        });
+
+        homeworkButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, TaskListActivity.class);
+            startActivity(intent);
+        });
+
+        timerButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, TimerActivity.class);
+            startActivity(intent);
+        });
+
+        wardrobeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, WardrobeActivity.class);
+            startActivity(intent);
+        });
+
+        // Optional placeholder for dewButton if needed
+        dewButton.setOnClickListener(v -> {
+            Toast.makeText(this, "Fountain Dude Activated 💧", Toast.LENGTH_SHORT).show();
+        });
 
         samHeadTop = findViewById(R.id.sam_head_top);
 
