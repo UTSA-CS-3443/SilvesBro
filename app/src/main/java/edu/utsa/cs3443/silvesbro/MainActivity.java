@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        // Optional placeholder for dewButton if needed
         dewButton.setOnClickListener(v -> {
             Toast.makeText(this, "Fountain Dude Activated 💧", Toast.LENGTH_SHORT).show();
         });
