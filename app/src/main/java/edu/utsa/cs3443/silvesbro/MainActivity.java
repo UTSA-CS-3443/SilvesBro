@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         samHeadTop = findViewById(R.id.sam_head_top);
 
         // up and down motion placeholder

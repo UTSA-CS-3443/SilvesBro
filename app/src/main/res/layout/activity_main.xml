@@ -54,7 +54,7 @@
     <!-- Timer Icon - Top Right, below wardrobe -->
 
     <ImageButton
-        android:id="@+id/settings_button"
+        android:id="@+id/bt_settings"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_margin="16dp"
@@ -64,12 +64,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Dew Icon - Bottom Left -->
-
-    <!-- Homework Icon - Bottom Right -->
 
     <ImageButton
-        android:id="@+id/timer_button"
+        android:id="@+id/bt_timer"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_margin="16dp"
@@ -80,7 +77,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
-        android:id="@+id/dew_button"
+        android:id="@+id/bt_dew"
         android:layout_width="135dp"
         android:layout_height="80dp"
         android:layout_margin="16dp"
@@ -91,7 +88,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
-        android:id="@+id/homework_button"
+        android:id="@+id/bt_homework"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:scaleType="fitXY"
@@ -101,15 +98,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp" />
 
-    <!-- Wardrobe Icon - Above Homework -->
     <ImageButton
-        android:id="@+id/wardrobe_button"
+        android:id="@+id/bt_wardrobe"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:scaleType="fitXY"
         android:background="@android:color/transparent"
         android:src="@drawable/wardrobe_icon"
-        app:layout_constraintBottom_toTopOf="@id/homework_button"
+        app:layout_constraintBottom_toTopOf="@id/bt_homework"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="16dp" />
 
