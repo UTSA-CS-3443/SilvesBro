@@ -48,8 +48,10 @@ public class MainActivity extends AppCompatActivity {
         ImageButton timerButton = findViewById(R.id.bt_timer);
         ImageButton wardrobeButton = findViewById(R.id.bt_wardrobe);
 
-        settingsButton.setOnClickListener(v -> launchActivity("settings"));
-        homeworkButton.setOnClickListener(v -> launchActivity("homework"));
+        settingsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivityForResult(intent, 1);
+        });        homeworkButton.setOnClickListener(v -> launchActivity("homework"));
         timerButton.setOnClickListener(v -> launchActivity("timer"));
         wardrobeButton.setOnClickListener(v -> launchActivity("wardrobe"));
 
@@ -60,11 +62,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        SoundManager.getInstance().stopMusic();
-    }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            // Reload profile to update all fields
+            userProfile.loadProfile(this);
 
+            updateDisplayName(userProfile.getName());
+
+            if (userProfile.isMusicOn()) {
+                SoundManager.getInstance().playMusic(this, R.raw.bg_music_1, true);
+            } else {
+                SoundManager.getInstance().stopMusic();
+            }
+        }
+    }
     public void handleFeedButton() {
         character.feed();
         userProfile.addMountainDew(1);

@@ -54,12 +54,6 @@ public class SettingsActivity extends AppCompatActivity {
         creditsButton.setOnClickListener(v -> navigateCredits());
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        SoundManager.getInstance().stopMusic();
-    }
-
     public void toggleSound() {
         isSoundOn = soundButton.isChecked();
     }
@@ -80,6 +74,12 @@ public class SettingsActivity extends AppCompatActivity {
         profile.setSwaggerMode(swaggerButton.isChecked());
         profile.addName(name);
         profile.saveProfile(this);
+
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("name", name);
+        resultIntent.putExtra("music", musicButton.isChecked());
+        setResult(RESULT_OK, resultIntent);
+        finish();
     }
 
 
