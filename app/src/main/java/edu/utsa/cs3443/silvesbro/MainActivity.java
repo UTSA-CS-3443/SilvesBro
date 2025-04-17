@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -47,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
         ImageButton homeworkButton = findViewById(R.id.bt_homework);
         ImageButton timerButton = findViewById(R.id.bt_timer);
         ImageButton wardrobeButton = findViewById(R.id.bt_wardrobe);
+        // below views are for the timer
+        TextView countdownTimer = findViewById(R.id.countdown_timer);
+        CountDownTimer timer;
 
         settingsButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
