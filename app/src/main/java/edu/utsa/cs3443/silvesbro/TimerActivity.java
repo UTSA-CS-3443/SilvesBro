@@ -1,5 +1,6 @@
 package edu.utsa.cs3443.silvesbro;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
@@ -21,7 +22,7 @@ public class TimerActivity extends AppCompatActivity {
     Button startTimerButton;
     CountDownTimer timer;
     private int timeInMinutes;
-    private int timeInMilliseconds;
+    private long timeInMilliseconds;
 
 
     @Override
@@ -48,32 +49,14 @@ public class TimerActivity extends AppCompatActivity {
                 //TODO
                 //set timer and switch screen to main
                 timeInMilliseconds = timeInMinutes * 60000;
-                startTime();
+                //System.out.println(timeInMilliseconds);
+                Intent intent = new Intent(TimerActivity.this, MainActivity.class);
+                intent.putExtra("TIMER_DURATION_MILLIS", timeInMilliseconds);
+                startActivity(intent);
+                //startTime(timeInMilliseconds);
             }
         });
 
     }
-
-    private void startTime() {
-        timer = new CountDownTimer(10000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                long hours = (millisUntilFinished / 1000) / 3600;
-                long minutes = ((millisUntilFinished / 1000) % 3600) / 60;
-                long seconds = (millisUntilFinished / 1000) % 60;
-                String timeFormatted = String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
-                //countdownTimer.setText(timeFormatted); // do this in main somehow
-
-            }
-
-            @Override
-            public void onFinish() {
-                //countdownTimer.setText("00:00:00");
-                Toast.makeText(TimerActivity.this, "Time's up!", Toast.LENGTH_SHORT).show(); //change to main
-
-            }
-        };
-    }
-
 
 }

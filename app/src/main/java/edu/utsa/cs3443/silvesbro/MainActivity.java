@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
 
     private Character character;
@@ -21,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView happinessDisplay;
     private TextView nameDisplay;
     private TextView timerDisplay;
+    private CountDownTimer timer;
+    private TextView countdownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +53,7 @@ public class MainActivity extends AppCompatActivity {
         ImageButton timerButton = findViewById(R.id.bt_timer);
         ImageButton wardrobeButton = findViewById(R.id.bt_wardrobe);
         // below views are for the timer
-        TextView countdownTimer = findViewById(R.id.countdown_timer);
-        CountDownTimer timer;
+        countdownTimer = findViewById(R.id.countdown_timer);
 
         settingsButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
@@ -63,6 +66,14 @@ public class MainActivity extends AppCompatActivity {
         if (userProfile.isMusicOn()) {
             soundManager.playMusic(this, R.raw.bg_music_1, true);
         }
+
+        //check if timer returned a duration
+        if(getIntent().hasExtra("TIMER_DURATION_MILLIS")) {
+            long durationMillis = getIntent().getLongExtra("TIMER_DURATION_MILLIS", 0);
+            System.out.println("duration: " + durationMillis);
+            startTime(durationMillis);
+        }
+
     }
 
     @Override
@@ -127,4 +138,26 @@ public class MainActivity extends AppCompatActivity {
     public void updateDisplayName(String name) {
         nameDisplay.setText(name);
     }
+
+    private void startTime(long duration) {
+        timer = new CountDownTimer(duration, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                long hours = (millisUntilFinished / 1000) / 3600;
+                long minutes = ((millisUntilFinished / 1000) % 3600) / 60;
+                long seconds = (millisUntilFinished / 1000) % 60;
+                String timeFormatted = String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
+                countdownTimer.setText(timeFormatted); // do this in main somehow
+
+            }
+
+            @Override
+            public void onFinish() {
+                countdownTimer.setText("00:00:00");
+                Toast.makeText(MainActivity.this, "Time's up!", Toast.LENGTH_SHORT).show();
+
+            }
+        }.start();
+    }
+
 }
