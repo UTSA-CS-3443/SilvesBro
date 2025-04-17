@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             soundManager.playMusic(this, R.raw.bg_music_1, true);
         }
 
-        //check if timer returned a duration
+        //check if TimerActivity returned a time
         if(getIntent().hasExtra("TIMER_DURATION_MILLIS")) {
             long durationMillis = getIntent().getLongExtra("TIMER_DURATION_MILLIS", 0);
             System.out.println("duration: " + durationMillis);

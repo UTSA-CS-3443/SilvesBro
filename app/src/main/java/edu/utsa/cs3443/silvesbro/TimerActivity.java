@@ -20,7 +20,6 @@ public class TimerActivity extends AppCompatActivity {
     TextView timerSliderVal;
     Slider timerSlider;
     Button startTimerButton;
-    CountDownTimer timer;
     private int timeInMinutes;
     private long timeInMilliseconds;
 
@@ -46,14 +45,11 @@ public class TimerActivity extends AppCompatActivity {
         startTimerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO
-                //set timer and switch screen to main
+                // pass time in milliseconds to main to start timer
                 timeInMilliseconds = timeInMinutes * 60000;
-                //System.out.println(timeInMilliseconds);
                 Intent intent = new Intent(TimerActivity.this, MainActivity.class);
                 intent.putExtra("TIMER_DURATION_MILLIS", timeInMilliseconds);
                 startActivity(intent);
-                //startTime(timeInMilliseconds);
             }
         });
 
