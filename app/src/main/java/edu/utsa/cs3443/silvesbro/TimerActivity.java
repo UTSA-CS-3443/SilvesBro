@@ -20,7 +20,7 @@ public class TimerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timer); // make sure this matches your XML file
+        setContentView(R.layout.activity_timer);
         timerSliderVal = findViewById(R.id.timer_slider_val);
         timerSlider = findViewById(R.id.timer_slider);
 

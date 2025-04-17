@@ -1,2 +1,2 @@
-name,total_study_time_minutes,mountain_dew_count,happiness_level,is_music_on,is_sound_on
-"Sam",240,15,80,true,true
+name,total_study_time_minutes,mountain_dew_count,happiness_level,is_music_on,is_sound_on,is_swagger_mode
+Sam,240,15,80,true,true,false

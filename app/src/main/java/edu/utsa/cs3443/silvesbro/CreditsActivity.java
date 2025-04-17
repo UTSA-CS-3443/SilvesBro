@@ -7,6 +7,6 @@ public class CreditsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_credits); // make sure this matches your XML file
+        setContentView(R.layout.activity_credits);
     }
 }

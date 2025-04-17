@@ -63,13 +63,6 @@
                     android:padding="8dp"
                     android:textColor="@android:color/black" />
 
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switch_show_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
-                    android:text="Show"
-                    android:textSize="14sp" />
             </LinearLayout>
 
             <androidx.appcompat.widget.SwitchCompat
@@ -104,6 +97,17 @@
                 android:background="@drawable/bg_swagger"
                 android:padding="12dp"
                 android:layout_marginBottom="24dp"/>
+
+            <Button
+                android:id="@+id/button_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/bg_credits"
+                android:paddingVertical="16dp"
+                android:text="💾 Save Settings"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
 
             <Button
                 android:id="@+id/button_credits"

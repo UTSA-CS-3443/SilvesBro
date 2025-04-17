@@ -5,64 +5,110 @@ import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-    ImageView samHeadTop;
+    private Character character;
+    private UserProfile userProfile;
+
+    private TextView happinessDisplay;
+    private TextView nameDisplay;
+    private TextView timerDisplay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ImageButton settingsButton = findViewById(R.id.bt_settings);
+        userProfile = new UserProfile();
+        userProfile.loadProfile(this);
+
+        WardrobeItem defaultOutfit = new WardrobeItem(1, "Blue Party Hat", R.drawable.blue_party_hat);
+        character = new Character(userProfile.getHappinessLvl(), defaultOutfit, userProfile.isSwaggerModeOn());
+
+        //happinessDisplay = findViewById(R.id.happiness_display);   // Add these later
+        nameDisplay = findViewById(R.id.name_display);
+        //timerDisplay = findViewById(R.id.timer_display);           // Add these later
+
+        updateDisplayName(userProfile.getName());
+        //updateHappinessMeter();
+        //updateDisplayTimer();
+
         ImageButton dewButton = findViewById(R.id.bt_dew);
+        dewButton.setOnClickListener(v -> handleFeedButton());
+
+        ImageButton settingsButton = findViewById(R.id.bt_settings);
         ImageButton homeworkButton = findViewById(R.id.bt_homework);
         ImageButton timerButton = findViewById(R.id.bt_timer);
         ImageButton wardrobeButton = findViewById(R.id.bt_wardrobe);
 
-        settingsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+        settingsButton.setOnClickListener(v -> launchActivity("settings"));
+        homeworkButton.setOnClickListener(v -> launchActivity("homework"));
+        timerButton.setOnClickListener(v -> launchActivity("timer"));
+        wardrobeButton.setOnClickListener(v -> launchActivity("wardrobe"));
+
+        SoundManager soundManager = SoundManager.getInstance();
+        if (userProfile.isMusicOn()) {
+            soundManager.playMusic(this, R.raw.bg_music_1, true);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SoundManager.getInstance().stopMusic();
+    }
+
+    public void handleFeedButton() {
+        character.feed();
+        userProfile.addMountainDew(1);
+        //updateHappinessMeter();
+        Toast.makeText(this, "SilvesBro chugged that Fountain Dude", Toast.LENGTH_SHORT).show();
+    }
+
+    private void launchActivity(String screen) {
+        Class<?> target = null;
+
+        switch (screen) {
+            case "settings":
+                target = SettingsActivity.class;
+                break;
+            case "homework":
+                target = TaskListActivity.class;
+                break;
+            case "timer":
+                target = TimerActivity.class;
+                break;
+            case "wardrobe":
+                target = WardrobeActivity.class;
+                break;
+        }
+
+        if (target != null) {
+            Intent intent = new Intent(MainActivity.this, target);
             startActivity(intent);
-        });
+        }
+    }
 
-        homeworkButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, TaskListActivity.class);
-            startActivity(intent);
-        });
 
-        timerButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, TimerActivity.class);
-            startActivity(intent);
-        });
+    /*
+    public void updateHappinessMeter() {
+        int happiness = character.getHappinessLvl();
+        happinessDisplay.setText("Happiness: " + happiness);
+    }
 
-        wardrobeButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, WardrobeActivity.class);
-            startActivity(intent);
-        });
+    public void updateDisplayTimer() {
+        timerDisplay.setText("Study Time: " + userProfile.getTotalStudyTime() + " min");
+    }
+    */
 
-        dewButton.setOnClickListener(v -> {
-            Toast.makeText(this, "Fountain Dude Activated 💧", Toast.LENGTH_SHORT).show();
-        });
-
-        samHeadTop = findViewById(R.id.sam_head_top);
-
-        // up and down motion placeholder
-        ObjectAnimator talkAnim = ObjectAnimator.ofFloat(samHeadTop, "translationY", 0f, -40f, 0f);
-        talkAnim.setDuration(300);
-        talkAnim.setRepeatMode(ValueAnimator.RESTART);
-        talkAnim.setRepeatCount(ValueAnimator.INFINITE);
-
-        talkAnim.start();
+    public void updateDisplayName(String name) {
+        nameDisplay.setText(name);
     }
 }
