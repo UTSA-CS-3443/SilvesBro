@@ -2,10 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    android:padding="24dp">
+    android:padding="24dp"
+    tools:context=".AddTaskActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/settings_panel"
@@ -31,54 +33,34 @@
                 android:id="@+id/text_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="⚙️ Settings"
+                android:text="Add Task"
                 android:textSize="26sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
                 android:layout_marginBottom="24dp" />
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switch_music"
-                android:layout_width="match_parent"
+            <EditText
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="🎵 Music"
-                android:textSize="20sp"
-                android:textColor="@android:color/white"
-                android:background="@drawable/bg_music"
-                android:padding="12dp"
-                android:layout_marginBottom="16dp"/>
+                android:text="Name of Task"
+                android:ems="10"
+                android:id="@+id/nameInput">
+            </EditText>
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switch_sfx"
-                android:layout_width="match_parent"
+            <EditText
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="💥 Sound Effects"
-                android:textSize="20sp"
-                android:textColor="@android:color/black"
-                android:background="@drawable/bg_sfx"
-                android:padding="12dp"
-                android:layout_marginBottom="16dp"/>
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switch_swagger"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="🕶️ Swagger Mode"
-                android:textSize="20sp"
-                android:textColor="@android:color/white"
-                android:background="@drawable/bg_swagger"
-                android:padding="12dp"
-                android:layout_marginBottom="24dp"/>
+                android:text="Name of Task"
+                android:ems="10"
+                android:id="@+id/dateInput">
+            </EditText>
 
             <Button
-                android:id="@+id/button_credits"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="🎓 Credits"
-                android:textSize="18sp"
-                android:textColor="@android:color/white"
-                android:background="@drawable/bg_credits"
-                android:paddingVertical="16dp"/>
+                android:text="Add"
+                android:id="@+id/createTaskButton"
+                />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

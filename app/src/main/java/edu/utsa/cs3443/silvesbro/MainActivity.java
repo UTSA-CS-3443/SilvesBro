@@ -1,6 +1,5 @@
 package edu.utsa.cs3443.silvesbro;
 
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
@@ -26,13 +25,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView countdownTimer;
     private ImageView hatOverlay;
     private CountDownTimer timer;
-<<<<<<< Updated upstream
     private TextView bottleCount;
     private boolean timerPaused = false;
     private boolean timerCanceled = false;
-=======
-    private boolean dewOnCooldown = false;
->>>>>>> Stashed changes
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void handleFeedButton() {
-<<<<<<< Updated upstream
         if (userProfile.getDrinkCount() > 0) {
             character.feed();
             userProfile.subtractMountainDew(1);
@@ -154,12 +148,6 @@ public class MainActivity extends AppCompatActivity {
         else {
             Toast.makeText(this, "Need more Fountain Dude...", Toast.LENGTH_SHORT).show();
         }
-=======
-        character.feed();
-        userProfile.addMountainDew(1);
-        animateDewIntoMouth();
-        Toast.makeText(this, "SilvesBro chugged that Fountain Dude", Toast.LENGTH_SHORT).show();
->>>>>>> Stashed changes
     }
 
     private void launchActivity(String screen) {
@@ -217,59 +205,5 @@ public class MainActivity extends AppCompatActivity {
                 }, 5000);
             }
         }.start();
-    }
-
-
-
-    private void animateDewIntoMouth() {
-        ImageView dewBottle = findViewById(R.id.dew_btl);
-        ImageView character = findViewById(R.id.sam_head_bottom);
-        ImageButton dewButton = findViewById(R.id.bt_dew);
-
-        if (dewOnCooldown) {
-            Toast.makeText(this, "Let Silvesbro catch up...", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        dewOnCooldown = true;
-
-        dewBottle.setVisibility(View.VISIBLE);
-
-        int[] buttonLocation = new int[2];
-        dewButton.getLocationOnScreen(buttonLocation);
-        float startX = buttonLocation[0] + dewButton.getWidth() / 2f;
-        float startY = buttonLocation[1] + dewButton.getHeight() / 2f;
-
-
-        int[] characterLocation = new int[2];
-        character.getLocationOnScreen(characterLocation);
-        float targetX = characterLocation[0] + character.getWidth() / 2f;
-        float targetY = characterLocation[1] + character.getHeight() / 3f;
-
-        float deltaX = targetX - startX;
-        float deltaY = targetY - startY;
-
-        dewBottle.animate()
-                .translationXBy(deltaX)
-                .translationYBy(deltaY)
-                .setDuration(1000)
-                .withEndAction(() -> {
-
-                    dewBottle.setVisibility(View.INVISIBLE);
-
-                    dewBottle.animate()
-                            .translationXBy(-deltaX)
-                            .translationYBy(-deltaY)
-                            .setDuration(1000)
-                            .withEndAction(() -> {
-                                dewBottle.setVisibility(View.INVISIBLE);
-                            })
-                            .start();
-
-                    dewBottle.postDelayed(() -> {
-                        dewOnCooldown = false;
-                    }, 3000); // cooldown duration in ms
-                })
-                .start();
     }
 }

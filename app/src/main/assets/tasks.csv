@@ -1,3 +1,6 @@
 task_id,task_name,due_date,is_completed
 t001,Finish CS project,2025-04-05,false
 t002,Read Chapter 3,2025-03-30,true
+t003,Read Chapter 3,2025-03-30,false
+t004,Read Chapter 3,2025-03-30,false
+t005,Read Chapter 3,2025-03-30,true

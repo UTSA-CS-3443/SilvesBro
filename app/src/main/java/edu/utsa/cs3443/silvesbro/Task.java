@@ -1,23 +1,23 @@
 package edu.utsa.cs3443.silvesbro;
 
 public class Task {
-    private int id;
+    private String id;
     private String name;
     private String dueDate;
     private boolean isCompleted;
 
-    public Task(int id, String name, String dueDate, boolean isCompleted) {
+    public Task(String id, String name, String dueDate, boolean isCompleted) {
         this.id = id;
         this.name = name;
         this.dueDate = dueDate;
         this.isCompleted = isCompleted;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -37,11 +37,11 @@ public class Task {
         this.dueDate = dueDate;
     }
 
-    public boolean isCompleted() {
+    public boolean getIsCompleted() {
         return isCompleted;
     }
 
-    public void setCompleted(boolean completed) {
+    public void setIsCompleted(boolean completed) {
         isCompleted = completed;
     }
 
