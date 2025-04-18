@@ -89,6 +89,20 @@ public class MainActivity extends AppCompatActivity {
         hatBob.setRepeatMode(ObjectAnimator.REVERSE);
         hatBob.start();
 
+        ObjectAnimator headTilt = ObjectAnimator.ofFloat(samHead, "rotation", 0f, 4f, 0f);
+        headTilt.setDuration(450);
+        headTilt.setRepeatCount(ObjectAnimator.INFINITE);
+        headTilt.setRepeatMode(ObjectAnimator.REVERSE);
+        headTilt.start();
+
+        ObjectAnimator hatTilt = ObjectAnimator.ofFloat(hatOverlay, "rotation", 0f, 4f, 0f);
+        hatTilt.setDuration(450);
+        hatTilt.setRepeatCount(ObjectAnimator.INFINITE);
+        hatTilt.setRepeatMode(ObjectAnimator.REVERSE);
+        hatTilt.start();
+
+
+
     }
 
     @Override

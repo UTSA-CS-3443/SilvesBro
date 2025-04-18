@@ -174,4 +174,20 @@
         tools:layout_editor_absoluteX="174dp"
         tools:layout_editor_absoluteY="43dp" />
 
+    <TextView
+        android:id="@+id/bottle_count"
+        android:layout_width="39dp"
+        android:layout_height="32dp"
+        android:text="1"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="26dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/bt_dew"
+        app:layout_constraintEnd_toEndOf="@+id/bt_dew"
+        app:layout_constraintHorizontal_bias="0.721"
+        app:layout_constraintStart_toStartOf="@+id/bt_dew"
+        app:layout_constraintTop_toTopOf="@+id/bt_dew"
+        app:layout_constraintVertical_bias="0.423" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
