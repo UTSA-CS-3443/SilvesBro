@@ -1,4 +1,4 @@
-package edu.utsa.cs3443.silvesbro.model;
+package edu.utsa.cs3443.silvesbro;
 
 import android.content.Context;
 import android.media.MediaPlayer;

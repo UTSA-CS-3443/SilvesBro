@@ -1,4 +1,4 @@
-package edu.utsa.cs3443.silvesbro.model;
+package edu.utsa.cs3443.silvesbro;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;

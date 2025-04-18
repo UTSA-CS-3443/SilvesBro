@@ -56,12 +56,11 @@
         android:id="@+id/hat_overlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="80dp"
         android:scaleType="fitXY"
         android:src="@drawable/blue_party_hat"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -174,20 +173,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:layout_editor_absoluteX="174dp"
         tools:layout_editor_absoluteY="43dp" />
-
-    <TextView
-        android:id="@+id/bottle_count"
-        android:layout_width="33dp"
-        android:layout_height="28dp"
-        android:text="TextView"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/bt_dew"
-        app:layout_constraintEnd_toEndOf="@+id/bt_dew"
-        app:layout_constraintHorizontal_bias="0.686"
-        app:layout_constraintStart_toStartOf="@+id/bt_dew"
-        app:layout_constraintTop_toTopOf="@+id/bt_dew"
-        app:layout_constraintVertical_bias="0.442" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
