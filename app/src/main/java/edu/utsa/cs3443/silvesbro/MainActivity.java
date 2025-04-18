@@ -20,11 +20,10 @@ public class MainActivity extends AppCompatActivity {
     private Character character;
     private UserProfile userProfile;
 
-    private TextView happinessDisplay;
     private TextView nameDisplay;
-    private TextView timerDisplay;
-    private CountDownTimer timer;
     private TextView countdownTimer;
+    private ImageView hatOverlay;
+    private CountDownTimer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +36,13 @@ public class MainActivity extends AppCompatActivity {
         WardrobeItem defaultOutfit = new WardrobeItem(1, "Blue Party Hat", R.drawable.blue_party_hat);
         character = new Character(userProfile.getHappinessLvl(), defaultOutfit, userProfile.isSwaggerModeOn());
 
-        //happinessDisplay = findViewById(R.id.happiness_display);   // Add these later
         nameDisplay = findViewById(R.id.name_display);
-        //timerDisplay = findViewById(R.id.timer_display);           // Add these later
+        countdownTimer = findViewById(R.id.countdown_timer);
+        hatOverlay = findViewById(R.id.hat_overlay);
 
         updateDisplayName(userProfile.getName());
-        //updateHappinessMeter();
-        //updateDisplayTimer();
+        hatOverlay.setImageResource(defaultOutfit.getImageResource());
+        hatOverlay.setVisibility(View.VISIBLE);
 
         ImageButton dewButton = findViewById(R.id.bt_dew);
         dewButton.setOnClickListener(v -> handleFeedButton());
@@ -52,37 +51,53 @@ public class MainActivity extends AppCompatActivity {
         ImageButton homeworkButton = findViewById(R.id.bt_homework);
         ImageButton timerButton = findViewById(R.id.bt_timer);
         ImageButton wardrobeButton = findViewById(R.id.bt_wardrobe);
-        // below views are for the timer
-        countdownTimer = findViewById(R.id.countdown_timer);
 
         settingsButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivityForResult(intent, 1);
-        });        homeworkButton.setOnClickListener(v -> launchActivity("homework"));
+        });
+
+        homeworkButton.setOnClickListener(v -> launchActivity("homework"));
         timerButton.setOnClickListener(v -> launchActivity("timer"));
-        wardrobeButton.setOnClickListener(v -> launchActivity("wardrobe"));
+        wardrobeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, WardrobeActivity.class);
+            startActivityForResult(intent, 2);
+        });
 
         SoundManager soundManager = SoundManager.getInstance();
         if (userProfile.isMusicOn()) {
             soundManager.playMusic(this, R.raw.bg_music_1, true);
         }
 
-        //check if TimerActivity returned a time
         if(getIntent().hasExtra("TIMER_DURATION_MILLIS")) {
             long durationMillis = getIntent().getLongExtra("TIMER_DURATION_MILLIS", 0);
-            System.out.println("duration: " + durationMillis);
             startTime(durationMillis);
         }
+
+        ImageView samHead = findViewById(R.id.sam_head_top);
+        ImageView hatOverlay = findViewById(R.id.hat_overlay); // optional: move hat too
+
+        ObjectAnimator headBob = ObjectAnimator.ofFloat(samHead, "translationY", 0f, -25f, 0f);
+        headBob.setDuration(450);
+        headBob.setRepeatCount(ObjectAnimator.INFINITE);
+        headBob.setRepeatMode(ObjectAnimator.REVERSE);
+        headBob.start();
+
+// OPTIONAL: move hat with head
+        ObjectAnimator hatBob = ObjectAnimator.ofFloat(hatOverlay, "translationY", 0f, -25f, 0f);
+        hatBob.setDuration(450);
+        hatBob.setRepeatCount(ObjectAnimator.INFINITE);
+        hatBob.setRepeatMode(ObjectAnimator.REVERSE);
+        hatBob.start();
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == RESULT_OK) {
-            // Reload profile to update all fields
-            userProfile.loadProfile(this);
 
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            userProfile.loadProfile(this);
             updateDisplayName(userProfile.getName());
 
             if (userProfile.isMusicOn()) {
@@ -90,12 +105,18 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 SoundManager.getInstance().stopMusic();
             }
+        } else if (requestCode == 2 && resultCode == RESULT_OK) {
+            if (data != null && data.hasExtra("selectedHat")) {
+                int hatResId = data.getIntExtra("selectedHat", R.drawable.blue_party_hat);
+                hatOverlay.setImageResource(hatResId);
+                hatOverlay.setVisibility(View.VISIBLE);
+            }
         }
     }
+
     public void handleFeedButton() {
         character.feed();
         userProfile.addMountainDew(1);
-        //updateHappinessMeter();
         Toast.makeText(this, "SilvesBro chugged that Fountain Dude", Toast.LENGTH_SHORT).show();
     }
 
@@ -123,18 +144,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    /*
-    public void updateHappinessMeter() {
-        int happiness = character.getHappinessLvl();
-        happinessDisplay.setText("Happiness: " + happiness);
-    }
-
-    public void updateDisplayTimer() {
-        timerDisplay.setText("Study Time: " + userProfile.getTotalStudyTime() + " min");
-    }
-    */
-
     public void updateDisplayName(String name) {
         nameDisplay.setText(name);
     }
@@ -147,17 +156,14 @@ public class MainActivity extends AppCompatActivity {
                 long minutes = ((millisUntilFinished / 1000) % 3600) / 60;
                 long seconds = (millisUntilFinished / 1000) % 60;
                 String timeFormatted = String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
-                countdownTimer.setText(timeFormatted); // do this in main somehow
-
+                countdownTimer.setText(timeFormatted);
             }
 
             @Override
             public void onFinish() {
                 countdownTimer.setText("00:00:00");
                 Toast.makeText(MainActivity.this, "Time's up!", Toast.LENGTH_SHORT).show();
-
             }
         }.start();
     }
-
 }

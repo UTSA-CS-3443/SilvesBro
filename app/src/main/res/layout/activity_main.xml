@@ -28,6 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="395dp" />
 
+
     <ImageView
         android:id="@+id/sam_head_bottom"
         android:layout_width="143dp"
@@ -50,6 +51,18 @@
         android:layout_marginTop="130dp"
         android:layout_marginStart="19dp"
         />
+
+    <ImageView
+        android:id="@+id/hat_overlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/blue_party_hat"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/bt_settings"
@@ -96,6 +109,34 @@
         android:src="@drawable/dew_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <!--
+    <FrameLayout
+        android:id="@+id/dew_meter_container"
+        android:layout_width="30dp"
+        android:layout_height="180dp"
+        app:layout_constraintBottom_toTopOf="@id/bt_dew"
+        app:layout_constraintStart_toStartOf="@id/bt_dew"
+        android:layout_marginBottom="8dp">
+
+        <ProgressBar
+            android:id="@+id/dew_meter"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:rotation="270"
+            android:max="100"
+            android:progress="0"
+            android:progressDrawable="@drawable/dew_meter_red" />
+
+        <ImageView
+            android:id="@+id/dew_tube_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/dew_meter_tube"
+            android:scaleType="fitXY" />
+    </FrameLayout>
+    -->
 
     <ImageButton
         android:id="@+id/bt_homework"
