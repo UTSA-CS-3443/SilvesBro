@@ -5,6 +5,7 @@ import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -24,8 +25,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView countdownTimer;
     private ImageView hatOverlay;
     private CountDownTimer timer;
-
     private TextView bottleCount;
+    private boolean timerPaused = false;
+    private boolean timerCanceled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,12 +134,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void updateDrinkDisplay() {
+        bottleCount.setText(Integer.toString(userProfile.getDrinkCount()));
+    }
+
     public void handleFeedButton() {
         if (userProfile.getDrinkCount() > 0) {
             character.feed();
             userProfile.subtractMountainDew(1);
-            System.out.println(userProfile.getDrinkCount());
-            bottleCount.setText(Integer.toString(userProfile.getDrinkCount()));
+            updateDrinkDisplay();
             Toast.makeText(this, "SilvesBro chugged that Fountain Dude", Toast.LENGTH_SHORT).show();
         }
         else {
@@ -173,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
         nameDisplay.setText(name);
     }
 
+    // starts the timer
     private void startTime(long duration) {
         timer = new CountDownTimer(duration, 1000) {
             @Override
@@ -187,7 +193,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 countdownTimer.setText("00:00:00");
-                Toast.makeText(MainActivity.this, "Time's up!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Time's up!\n+1 Fountain Dude", Toast.LENGTH_SHORT).show();
+                userProfile.addMountainDew(1);
+                updateDrinkDisplay();
+                // handler allows the timer text to disappear after 5 seconds
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        countdownTimer.setText("");
+                    }
+                }, 5000);
             }
         }.start();
     }
