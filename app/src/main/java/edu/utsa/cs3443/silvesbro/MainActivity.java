@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         ImageView samHead = findViewById(R.id.sam_head_top);
-        ImageView hatOverlay = findViewById(R.id.hat_overlay); // optional: move hat too
+        ImageView hatOverlay = findViewById(R.id.hat_overlay);
 
         ObjectAnimator headBob = ObjectAnimator.ofFloat(samHead, "translationY", 0f, -25f, 0f);
         headBob.setDuration(450);
@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
         headBob.setRepeatMode(ObjectAnimator.REVERSE);
         headBob.start();
 
-// OPTIONAL: move hat with head
         ObjectAnimator hatBob = ObjectAnimator.ofFloat(hatOverlay, "translationY", 0f, -25f, 0f);
         hatBob.setDuration(450);
         hatBob.setRepeatCount(ObjectAnimator.INFINITE);
