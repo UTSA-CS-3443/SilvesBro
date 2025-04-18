@@ -1,13 +1,9 @@
 package edu.utsa.cs3443.silvesbro;
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,9 +11,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
 
+import edu.utsa.cs3443.silvesbro.model.Character;
+import edu.utsa.cs3443.silvesbro.model.SoundManager;
+import edu.utsa.cs3443.silvesbro.UserProfile;
+import edu.utsa.cs3443.silvesbro.model.WardrobeItem;
+
 public class MainActivity extends AppCompatActivity {
 
-    private Character character;
+    private edu.utsa.cs3443.silvesbro.model.Character character;
     private UserProfile userProfile;
 
     private TextView nameDisplay;
