@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView hatOverlay;
     private CountDownTimer timer;
 
+    private TextView bottleCount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
         ImageButton homeworkButton = findViewById(R.id.bt_homework);
         ImageButton timerButton = findViewById(R.id.bt_timer);
         ImageButton wardrobeButton = findViewById(R.id.bt_wardrobe);
+
+        bottleCount = findViewById(R.id.bottle_count);
+        bottleCount.setText(Integer.toString(userProfile.getDrinkCount()));
 
         settingsButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
@@ -128,9 +133,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void handleFeedButton() {
-        character.feed();
-        userProfile.addMountainDew(1);
-        Toast.makeText(this, "SilvesBro chugged that Fountain Dude", Toast.LENGTH_SHORT).show();
+        if (userProfile.getDrinkCount() > 0) {
+            character.feed();
+            userProfile.subtractMountainDew(1);
+            System.out.println(userProfile.getDrinkCount());
+            bottleCount.setText(Integer.toString(userProfile.getDrinkCount()));
+            Toast.makeText(this, "SilvesBro chugged that Fountain Dude", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, "Need more Fountain Dude...", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void launchActivity(String screen) {

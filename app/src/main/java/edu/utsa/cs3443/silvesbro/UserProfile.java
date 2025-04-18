@@ -77,6 +77,10 @@ public class UserProfile {
         drinkCount += count;
     }
 
+    public void subtractMountainDew(int count) {
+        drinkCount -= count;
+    }
+
     public void addName(String n) {
         name = n;
     }
@@ -98,4 +102,12 @@ public class UserProfile {
         return isSwaggerMode;
     }
     public String getName() { return name; }
+
+    public int getDrinkCount() {
+        return drinkCount;
+    }
+
+    public void setDrinkCount(int drinkCount) {
+        this.drinkCount = drinkCount;
+    }
 }

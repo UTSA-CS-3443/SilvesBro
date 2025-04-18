@@ -26,6 +26,7 @@ public class Character {
 
     public void feed() {
         increaseHappiness(10);
+
     }
 
     public void changeOutfit(WardrobeItem item) {
