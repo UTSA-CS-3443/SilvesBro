@@ -5,8 +5,12 @@ import android.content.res.AssetManager;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -57,6 +61,24 @@ public class TaskList {
             reader.close();
         } catch (Exception e) {
             Log.e("TaskList", "Failed to load profile: " + e.getMessage());
+        }
+    }
+
+    public void saveTasks(Context context) throws RuntimeException{
+        try { // MODE_APPEND TO APPEND OR MODE_PRIVATE TO WRITE ?
+            OutputStream outputStream = context.openFileOutput("tasks.csv", Context.MODE_PRIVATE);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
+            BufferedWriter writer = new BufferedWriter(outputStreamWriter);
+            writer.write("task_id,task_name,due_date,is_completed\n");
+            for (Task task : this.getTaskList()) {
+                writer.write(String.format("%s,%s,%s,%b\n",
+                        task.getId(), task.getName(), task.getDueDate(), task.getIsCompleted()));
+            }
+            writer.close();
+            outputStreamWriter.close();
+            outputStream.close();
+        } catch (IOException e) {
+            Log.e("TaskListActivity", "Failed to save profile: " + e.getMessage());
         }
     }
 

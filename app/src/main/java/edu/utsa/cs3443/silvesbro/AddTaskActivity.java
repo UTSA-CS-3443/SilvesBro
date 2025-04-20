@@ -34,23 +34,18 @@ public class AddTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_task);
 
         inputName = findViewById(R.id.nameInput);
-        inputDate = findViewById(R.id.dateInput);
         button = findViewById(R.id.createTaskButton);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // random filler ID
-                task = new Task("9999", inputName.getText().toString(), inputDate.getText().toString(), false);
+                task = new Task("9999", inputName.getText().toString(), "", false);
                 writeTaskToCSV(AddTaskActivity.this, task);
                 Intent intent = new Intent(AddTaskActivity.this, TaskListActivity.class);
                 startActivity(intent);
             }
         });
-
-    }
-
-    public void writeTaskToCSV(Task task) {
 
     }
 

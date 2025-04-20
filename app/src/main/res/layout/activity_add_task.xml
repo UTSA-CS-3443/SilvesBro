@@ -42,17 +42,10 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name of Task"
+                android:text="Enter Task"
+                android:layout_marginBottom="10dp"
                 android:ems="10"
                 android:id="@+id/nameInput">
-            </EditText>
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Name of Task"
-                android:ems="10"
-                android:id="@+id/dateInput">
             </EditText>
 
             <Button

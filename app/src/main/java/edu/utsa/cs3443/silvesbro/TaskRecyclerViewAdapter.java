@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,8 +23,19 @@ import edu.utsa.cs3443.silvesbro.Task;
  */
 public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerViewAdapter.MyViewHolder>{
 
+    //ArrayList
     private Context context;
     private ArrayList<Task> taskList;
+    private OnItemClickListener listener; //for done
+
+    //for delete functionality
+    public interface OnItemClickListener{
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener clickListener){
+        listener = clickListener;
+    }
 
     /**
      * constructor for the adapter class
@@ -49,7 +61,7 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
     public TaskRecyclerViewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.activity_task_recycler, parent, false);
-        return new TaskRecyclerViewAdapter.MyViewHolder(view);
+        return new TaskRecyclerViewAdapter.MyViewHolder(view,listener); // listener passed for some reason for done button
     }
 
     /**
@@ -64,19 +76,9 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
     public void onBindViewHolder(@NonNull TaskRecyclerViewAdapter.MyViewHolder holder, int position) {
         //assigning values to the views we created in the recycler_view_row layout file
         //based on the position of the recycler view
-
         String nameString = "" + taskList.get(position).getName();
-        String dueDateString = "" + taskList.get(position).getDueDate();
 
         holder.name.setText(taskList.get(position).getName());
-        holder.dueDate.setText(dueDateString);
-        //get image
-        //String image = dinos.get(position).getName();
-        //image = image.toLowerCase();
-        //int resourceID = context.getResources().getIdentifier(image, "drawable", context.getPackageName());
-        //holder.imageView.setImageResource(resourceID);
-
-
     }
 
     /**
@@ -94,18 +96,27 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
      */
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         private ImageView imageView;
-        private TextView name, dueDate;
+        private TextView name;
+        private Button doneButton;
 
         /**
          * constructor for MyViewHolder class
          * @param itemView, the display of an individual dinosaur
          */
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView, OnItemClickListener listener) { //listener passed for done button
             super(itemView);
 
             //imageView = itemView.findViewById(R.id.imageView);
             name = itemView.findViewById(R.id.taskName);
-            dueDate = itemView.findViewById(R.id.taskDueDate);
+            doneButton = itemView.findViewById(R.id.doneButton);
+
+            doneButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(getAdapterPosition());
+                }
+            });
+
         }
     }
 }
