@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,12 +26,15 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView nameDisplay;
     private TextView countdownTimer;
+    private LinearLayout timerButtons;
+    private Button pauseTimerButton;
+    private Button cancelTimerButton;
     private ImageView hatOverlay;
     private CountDownTimer timer;
     private TextView bottleCount;
-    private boolean timerPaused = false;
-    private boolean timerCanceled = false;
+    private boolean timerRunning = false;
     private boolean dewOnCooldown = false;
+    private long timeLeft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
 
         nameDisplay = findViewById(R.id.name_display);
         countdownTimer = findViewById(R.id.countdown_timer);
+        timerButtons = findViewById(R.id.timerButtons);
+        pauseTimerButton = findViewById(R.id.pauseTimerButton);
+        cancelTimerButton = findViewById(R.id.cancelTimerButton);
+
         hatOverlay = findViewById(R.id.hat_overlay);
 
         updateDisplayName(userProfile.getName());
@@ -110,7 +119,26 @@ public class MainActivity extends AppCompatActivity {
         hatTilt.setRepeatMode(ObjectAnimator.REVERSE);
         hatTilt.start();
 
+        // TIMER STOP/START
 
+        cancelTimerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelTimer();
+            }
+        });
+
+        pauseTimerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (timerRunning) {
+                    pauseTimer();
+                }
+                else {
+                    startTime(timeLeft);
+                }
+            }
+        });
 
     }
 
@@ -182,9 +210,14 @@ public class MainActivity extends AppCompatActivity {
 
     // starts the timer
     private void startTime(long duration) {
+        countdownTimer.setVisibility(View.VISIBLE);
+        timerButtons.setVisibility(View.VISIBLE);
+        timerRunning = true;
+        pauseTimerButton.setText("Pause");
         timer = new CountDownTimer(duration, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
+                timeLeft = millisUntilFinished;
                 long hours = (millisUntilFinished / 1000) / 3600;
                 long minutes = ((millisUntilFinished / 1000) % 3600) / 60;
                 long seconds = (millisUntilFinished / 1000) % 60;
@@ -195,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 countdownTimer.setText("00:00:00");
+                timerRunning = false;
                 Toast.makeText(MainActivity.this, "Time's up!\n+1 Fountain Dude", Toast.LENGTH_SHORT).show();
                 userProfile.addMountainDew(1);
                 updateDrinkDisplay();
@@ -202,11 +236,25 @@ public class MainActivity extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        countdownTimer.setText("");
+                        countdownTimer.setVisibility(View.INVISIBLE);
+                        timerButtons.setVisibility(View.INVISIBLE);
                     }
                 }, 5000);
             }
         }.start();
+    }
+
+    private void cancelTimer() {
+        timer.cancel();
+        countdownTimer.setVisibility(View.INVISIBLE);
+        timerButtons.setVisibility(View.INVISIBLE);
+    }
+
+    private void pauseTimer() {
+        timer.cancel();
+        timerRunning = false;
+        pauseTimerButton.setText("Start");
+
     }
 
     private void animateDewIntoMouth() {

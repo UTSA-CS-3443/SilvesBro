@@ -164,15 +164,42 @@
         android:id="@+id/countdown_timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
+        android:text="00:00:00"
         android:textSize="50sp"
         android:textStyle="bold"
         android:textColor="@color/white"
+        android:visibility="invisible"
         app:layout_constraintTop_toTopOf="@+id/bt_timer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:layout_editor_absoluteX="174dp"
         tools:layout_editor_absoluteY="43dp" />
+
+    <LinearLayout
+        android:id="@+id/timerButtons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/countdown_timer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/pauseTimerButton"
+            android:text="Pause"
+            android:backgroundTint="@color/black" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancelTimerButton"
+            android:text="Cancel"
+            android:backgroundTint="@color/black" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/bottle_count"
