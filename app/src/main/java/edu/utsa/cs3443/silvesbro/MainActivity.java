@@ -1,6 +1,5 @@
 package edu.utsa.cs3443.silvesbro;
 
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
@@ -20,6 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int REQ_SETTINGS  = 1;
+    private static final int REQ_WARDROBE = 2;
 
     private Character character;
     private UserProfile userProfile;
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView hatOverlay;
     private CountDownTimer timer;
     private TextView bottleCount;
-    private boolean timerRunning = false;
+    private boolean timerRunning  = false;
     private boolean dewOnCooldown = false;
     private long timeLeft;
 
@@ -43,57 +44,57 @@ public class MainActivity extends AppCompatActivity {
 
         userProfile = new UserProfile();
         userProfile.loadProfile(this);
+        int savedHatResId = userProfile.getSelectedHatResId();
+        WardrobeItem outfit = new WardrobeItem(1, "restored", savedHatResId );
 
-        WardrobeItem defaultOutfit = new WardrobeItem(1, "Blue Party Hat", R.drawable.blue_party_hat);
-        character = new Character(userProfile.getHappinessLvl(), defaultOutfit, userProfile.isSwaggerModeOn());
+        character = new Character(
+                userProfile.getHappinessLvl(),
+                outfit,
+                userProfile.isSwaggerModeOn()
+        );
 
-        nameDisplay = findViewById(R.id.name_display);
-        countdownTimer = findViewById(R.id.countdown_timer);
-        timerButtons = findViewById(R.id.timerButtons);
-        pauseTimerButton = findViewById(R.id.pauseTimerButton);
-        cancelTimerButton = findViewById(R.id.cancelTimerButton);
-
-        hatOverlay = findViewById(R.id.hat_overlay);
+        nameDisplay     = findViewById(R.id.name_display);
+        countdownTimer  = findViewById(R.id.countdown_timer);
+        timerButtons    = findViewById(R.id.timerButtons);
+        pauseTimerButton= findViewById(R.id.pauseTimerButton);
+        cancelTimerButton= findViewById(R.id.cancelTimerButton);
+        hatOverlay      = findViewById(R.id.hat_overlay);
+        bottleCount     = findViewById(R.id.bottle_count);
 
         updateDisplayName(userProfile.getName());
-        hatOverlay.setImageResource(defaultOutfit.getImageResource());
+        bottleCount.setText(String.valueOf(userProfile.getDrinkCount()));
+        hatOverlay.setImageResource(savedHatResId);
         hatOverlay.setVisibility(View.VISIBLE);
 
         ImageButton dewButton = findViewById(R.id.bt_dew);
         dewButton.setOnClickListener(v -> handleFeedButton());
 
-        ImageButton settingsButton = findViewById(R.id.bt_settings);
-        ImageButton homeworkButton = findViewById(R.id.bt_homework);
-        ImageButton timerButton = findViewById(R.id.bt_timer);
-        ImageButton wardrobeButton = findViewById(R.id.bt_wardrobe);
-
-        bottleCount = findViewById(R.id.bottle_count);
-        bottleCount.setText(Integer.toString(userProfile.getDrinkCount()));
+        ImageButton settingsButton  = findViewById(R.id.bt_settings);
+        ImageButton homeworkButton  = findViewById(R.id.bt_homework);
+        ImageButton timerButton     = findViewById(R.id.bt_timer);
+        ImageButton wardrobeButton  = findViewById(R.id.bt_wardrobe);
 
         settingsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-            startActivityForResult(intent, 1);
+            Intent i = new Intent(this, SettingsActivity.class);
+            startActivityForResult(i, REQ_SETTINGS);
         });
-
         homeworkButton.setOnClickListener(v -> launchActivity("homework"));
         timerButton.setOnClickListener(v -> launchActivity("timer"));
         wardrobeButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, WardrobeActivity.class);
-            startActivityForResult(intent, 2);
+            Intent i = new Intent(this, WardrobeActivity.class);
+            startActivityForResult(i, REQ_WARDROBE);
         });
 
-        SoundManager soundManager = SoundManager.getInstance();
         if (userProfile.isMusicOn()) {
-            soundManager.playMusic(this, R.raw.bg_music_1, true);
+            SoundManager.getInstance().playMusic(this, R.raw.bg_music_1, true);
         }
 
-        if(getIntent().hasExtra("TIMER_DURATION_MILLIS")) {
-            long durationMillis = getIntent().getLongExtra("TIMER_DURATION_MILLIS", 0);
-            startTime(durationMillis);
+        if (getIntent().hasExtra("TIMER_DURATION_MILLIS")) {
+            long dur = getIntent().getLongExtra("TIMER_DURATION_MILLIS", 0);
+            startTime(dur);
         }
 
         ImageView samHead = findViewById(R.id.sam_head_top);
-        ImageView hatOverlay = findViewById(R.id.hat_overlay);
 
         ObjectAnimator headBob = ObjectAnimator.ofFloat(samHead, "translationY", 0f, -25f, 0f);
         headBob.setDuration(450);
@@ -119,53 +120,40 @@ public class MainActivity extends AppCompatActivity {
         hatTilt.setRepeatMode(ObjectAnimator.REVERSE);
         hatTilt.start();
 
-        // TIMER STOP/START
-
-        cancelTimerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cancelTimer();
-            }
+        cancelTimerButton.setOnClickListener(v -> cancelTimer());
+        pauseTimerButton.setOnClickListener(v -> {
+            if (timerRunning) pauseTimer();
+            else startTime(timeLeft);
         });
-
-        pauseTimerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (timerRunning) {
-                    pauseTimer();
-                }
-                else {
-                    startTime(timeLeft);
-                }
-            }
-        });
-
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1 && resultCode == RESULT_OK) {
+        if (requestCode == REQ_SETTINGS && resultCode == RESULT_OK) {
             userProfile.loadProfile(this);
             updateDisplayName(userProfile.getName());
+            if (userProfile.isMusicOn()) SoundManager.getInstance().playMusic(this, R.raw.bg_music_1, true);
+            else                        SoundManager.getInstance().stopMusic();
 
-            if (userProfile.isMusicOn()) {
-                SoundManager.getInstance().playMusic(this, R.raw.bg_music_1, true);
-            } else {
-                SoundManager.getInstance().stopMusic();
-            }
-        } else if (requestCode == 2 && resultCode == RESULT_OK) {
+        } else if (requestCode == REQ_WARDROBE && resultCode == RESULT_OK) {
             if (data != null && data.hasExtra("selectedHat")) {
                 int hatResId = data.getIntExtra("selectedHat", R.drawable.blue_party_hat);
+
                 hatOverlay.setImageResource(hatResId);
                 hatOverlay.setVisibility(View.VISIBLE);
+
+                character.changeOutfit(new WardrobeItem(-1, "selected", hatResId));
+
+                userProfile.setSelectedHatResId(hatResId);
+                userProfile.saveProfile(this);
             }
         }
     }
 
     public void updateDrinkDisplay() {
-        bottleCount.setText(Integer.toString(userProfile.getDrinkCount()));
+        bottleCount.setText(String.valueOf(userProfile.getDrinkCount()));
     }
 
     public void handleFeedButton() {
@@ -174,137 +162,103 @@ public class MainActivity extends AppCompatActivity {
             userProfile.subtractMountainDew(1);
             animateDewIntoMouth();
             updateDrinkDisplay();
-        }
-        else {
+        } else {
             Toast.makeText(this, "Need more Fountain Dude...", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void launchActivity(String screen) {
         Class<?> target = null;
-
         switch (screen) {
-            case "settings":
-                target = SettingsActivity.class;
-                break;
-            case "homework":
-                target = TaskListActivity.class;
-                break;
-            case "timer":
-                target = TimerActivity.class;
-                break;
-            case "wardrobe":
-                target = WardrobeActivity.class;
-                break;
+            case "settings": target = SettingsActivity.class; break;
+            case "homework": target = TaskListActivity.class; break;
+            case "timer":    target = TimerActivity.class;    break;
+            case "wardrobe": target = WardrobeActivity.class; break;
         }
-
-        if (target != null) {
-            Intent intent = new Intent(MainActivity.this, target);
-            startActivity(intent);
-        }
+        if (target != null) startActivity(new Intent(this, target));
     }
 
     public void updateDisplayName(String name) {
         nameDisplay.setText(name);
     }
 
-    // starts the timer
     private void startTime(long duration) {
         countdownTimer.setVisibility(View.VISIBLE);
         timerButtons.setVisibility(View.VISIBLE);
         timerRunning = true;
         pauseTimerButton.setText("Pause");
         timer = new CountDownTimer(duration, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
+            @Override public void onTick(long millisUntilFinished) {
                 timeLeft = millisUntilFinished;
-                long hours = (millisUntilFinished / 1000) / 3600;
-                long minutes = ((millisUntilFinished / 1000) % 3600) / 60;
-                long seconds = (millisUntilFinished / 1000) % 60;
-                String timeFormatted = String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
-                countdownTimer.setText(timeFormatted);
+                long hrs = (millisUntilFinished / 1000) / 3600;
+                long mins = ((millisUntilFinished / 1000) % 3600) / 60;
+                long secs = (millisUntilFinished / 1000) % 60;
+                String fmt = String.format(Locale.getDefault(), "%02d:%02d:%02d", hrs, mins, secs);
+                countdownTimer.setText(fmt);
             }
-
-            @Override
-            public void onFinish() {
+            @Override public void onFinish() {
                 countdownTimer.setText("00:00:00");
                 timerRunning = false;
                 Toast.makeText(MainActivity.this, "Time's up!\n+1 Fountain Dude", Toast.LENGTH_SHORT).show();
                 userProfile.addMountainDew(1);
                 updateDrinkDisplay();
-                // handler allows the timer text to disappear after 5 seconds
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        countdownTimer.setVisibility(View.INVISIBLE);
-                        timerButtons.setVisibility(View.INVISIBLE);
-                    }
+                new Handler().postDelayed(() -> {
+                    countdownTimer.setVisibility(View.INVISIBLE);
+                    timerButtons.setVisibility(View.INVISIBLE);
                 }, 5000);
             }
         }.start();
     }
 
     private void cancelTimer() {
-        timer.cancel();
+        if (timer != null) timer.cancel();
         countdownTimer.setVisibility(View.INVISIBLE);
         timerButtons.setVisibility(View.INVISIBLE);
     }
 
     private void pauseTimer() {
-        timer.cancel();
+        if (timer != null) timer.cancel();
         timerRunning = false;
         pauseTimerButton.setText("Start");
-
     }
 
     private void animateDewIntoMouth() {
-        ImageView dewBottle = findViewById(R.id.dew_btl);
-        ImageView character = findViewById(R.id.sam_head_bottom);
+        ImageView dewBottle   = findViewById(R.id.dew_btl);
+        ImageView characterIV = findViewById(R.id.sam_head_bottom);
         ImageButton dewButton = findViewById(R.id.bt_dew);
 
         if (dewOnCooldown) {
             Toast.makeText(this, "Let Silvesbro catch up...", Toast.LENGTH_SHORT).show();
             return;
         }
-
         dewOnCooldown = true;
-
         dewBottle.setVisibility(View.VISIBLE);
 
-        int[] buttonLocation = new int[2];
-        dewButton.getLocationOnScreen(buttonLocation);
-        float startX = buttonLocation[0] + dewButton.getWidth() / 2f;
-        float startY = buttonLocation[1] + dewButton.getHeight() / 2f;
+        int[] btnLoc = new int[2];
+        dewButton.getLocationOnScreen(btnLoc);
+        float startX = btnLoc[0] + dewButton.getWidth()  / 2f;
+        float startY = btnLoc[1] + dewButton.getHeight() / 2f;
 
+        int[] charLoc = new int[2];
+        characterIV.getLocationOnScreen(charLoc);
+        float targetX = charLoc[0] + characterIV.getWidth()  / 2f;
+        float targetY = charLoc[1] + characterIV.getHeight() / 3f;
 
-        int[] characterLocation = new int[2];
-        character.getLocationOnScreen(characterLocation);
-        float targetX = characterLocation[0] + character.getWidth() / 2f;
-        float targetY = characterLocation[1] + character.getHeight() / 3f;
-
-        float deltaX = targetX - startX;
-        float deltaY = targetY - startY;
+        float dx = targetX - startX, dy = targetY - startY;
 
         dewBottle.animate()
-                .translationXBy(deltaX)
-                .translationYBy(deltaY)
+                .translationXBy(dx)
+                .translationYBy(dy)
                 .setDuration(1000)
                 .withEndAction(() -> {
-
                     dewBottle.setVisibility(View.INVISIBLE);
-
                     dewBottle.animate()
-                            .translationXBy(-deltaX)
-                            .translationYBy(-deltaY)
+                            .translationXBy(-dx)
+                            .translationYBy(-dy)
                             .setDuration(500)
-                            .withEndAction(() -> {
-                                dewBottle.setVisibility(View.INVISIBLE);
-                            })
+                            .withEndAction(() -> dewBottle.setVisibility(View.INVISIBLE))
                             .start();
-
-                    dewBottle.postDelayed(() -> {
-                        dewOnCooldown = false;
-                    }, 500); // cooldown duration in ms
+                    new Handler().postDelayed(() -> dewOnCooldown = false, 500);
                 })
                 .start();
     }

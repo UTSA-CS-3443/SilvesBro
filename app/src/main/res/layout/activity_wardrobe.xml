@@ -7,7 +7,7 @@
     android:background="@drawable/background"
     android:orientation="vertical"
     android:padding="24dp"
-    android:gravity="center"> <!-- vertically and horizontally center -->
+    android:gravity="center">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/wardrobe_panel"
