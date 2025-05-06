@@ -1,12 +1,17 @@
 package edu.utsa.cs3443.silvesbro;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,8 +29,8 @@ public class AddTaskActivity extends AppCompatActivity {
 
     EditText inputName;
     EditText inputDate;
-    Button button;
-    Task task;
+    private Task task;
+    private TaskList taskList;
 
 
     @Override
@@ -33,37 +38,68 @@ public class AddTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_task);
 
+        taskList = new TaskList();
         inputName = findViewById(R.id.nameInput);
-        button = findViewById(R.id.createTaskButton);
+        Button createTaskButton = findViewById(R.id.createTaskButton);
+        Button dateButton = findViewById(R.id.taskDate);
+        Button timeButton = findViewById(R.id.taskTime);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        createTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // random filler ID
-                task = new Task("9999", inputName.getText().toString(), "", false);
-                writeTaskToCSV(AddTaskActivity.this, task);
-                Intent intent = new Intent(AddTaskActivity.this, TaskListActivity.class);
-                startActivity(intent);
+                if (inputName.getText().toString().isEmpty()) {
+                    Toast.makeText(AddTaskActivity.this, "Invalid input, try again.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    // random filler ID
+                    task = new Task("9999", inputName.getText().toString(), "", false);
+                    TaskList.addTaskToCSV(AddTaskActivity.this, task);
+                    Intent intent = new Intent(AddTaskActivity.this, TaskListActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialogDate();
+            }
+        });
+
+        timeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialogTime();
             }
         });
 
     }
 
-    public void writeTaskToCSV(Context context, Task task) throws RuntimeException  {
-        try { // MODE_APPEND TO APPEND OR MODE_PRIVATE TO WRITE ?
-            OutputStream outputStream = context.openFileOutput("tasks.csv", Context.MODE_APPEND);
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
-            BufferedWriter writer = new BufferedWriter(outputStreamWriter);
-            //writer.write("name,total_study_time_minutes,mountain_dew_count,happiness_level,is_music_on,is_sound_on,is_swagger_mode\n");
-            writer.write(String.format("%s,%s,%s,%b\n",
-                    task.getId(), task.getName(), task.getDueDate(), task.getIsCompleted()));
+    public void openDialogDate(){
+        DatePickerDialog dialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String testString = String.valueOf(year) + "/" + String.valueOf(month) + "/" + String.valueOf(dayOfMonth);
+                Toast.makeText(AddTaskActivity.this, testString, Toast.LENGTH_SHORT).show();
+                //THIS IS WHERE YOU STORE THE DATE VALUES AND MAKE DATE WORK
+            }
+        }, 2025, 0, 0);
 
-            writer.close();
-            outputStreamWriter.close();
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("AddTaskActivity", "Failed to save profile: " + e.getMessage());
-        }
+        dialog.show();
+    }
+
+    public void openDialogTime() {
+        TimePickerDialog dialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                String testString = String.valueOf(hourOfDay) + ":" + String.valueOf(minute);
+                Toast.makeText(AddTaskActivity.this, testString, Toast.LENGTH_SHORT).show();
+            }
+        }, 15, 0, true);
+
+        dialog.show();
+
     }
 
 }

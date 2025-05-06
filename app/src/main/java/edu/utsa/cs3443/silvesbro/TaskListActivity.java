@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 public class TaskListActivity extends AppCompatActivity {
 
     private TaskList taskList;
-    Button addTaskButton;
     Button completeTaskButton;
 
     @Override
@@ -21,7 +20,8 @@ public class TaskListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_list);
 
-        addTaskButton = findViewById(R.id.addTaskButton);
+        Button addTaskButton = findViewById(R.id.addTaskButton);
+        Button exitButton = findViewById(R.id.exitButton);
         //completeTaskButton = findViewById(R.id.)
         taskList = new TaskList();
         taskList.loadTasks(this);
@@ -51,7 +51,18 @@ public class TaskListActivity extends AppCompatActivity {
             }
         });
 
-
+        exitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchMainActivity();
+            }
+        });
 
     }
+
+    public void launchMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
 }

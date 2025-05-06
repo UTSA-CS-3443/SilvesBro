@@ -110,5 +110,23 @@ public class TaskList {
         return this.taskList.size();
     }
 
+    // static bc not related to an instance
+    public static void addTaskToCSV (Context context, Task task) throws RuntimeException  {
+        try { // MODE_APPEND TO APPEND OR MODE_PRIVATE TO WRITE ?
+            OutputStream outputStream = context.openFileOutput("tasks.csv", Context.MODE_APPEND);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
+            BufferedWriter writer = new BufferedWriter(outputStreamWriter);
+            //writer.write("name,total_study_time_minutes,mountain_dew_count,happiness_level,is_music_on,is_sound_on,is_swagger_mode\n");
+            writer.write(String.format("%s,%s,%s,%b\n",
+                    task.getId(), task.getName(), task.getDueDate(), task.getIsCompleted()));
+
+            writer.close();
+            outputStreamWriter.close();
+            outputStream.close();
+        } catch (IOException e) {
+            Log.e("AddTaskActivity", "Failed to save profile: " + e.getMessage());
+        }
+    }
+
 }
 
