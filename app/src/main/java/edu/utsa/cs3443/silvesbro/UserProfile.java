@@ -51,6 +51,7 @@ public class UserProfile {
                 totalStudyTime  = Long.parseLong(data[1]);
                 drinkCount      = Integer.parseInt(data[2]);
                 happinessLevel  = Integer.parseInt(data[3]);
+                Log.d("PROFILE", "Loaded happinessLevel = " + happinessLevel);
                 isMusicOn       = Boolean.parseBoolean(data[4]);
                 isSoundOn       = Boolean.parseBoolean(data[5]);
                 isSwaggerMode   = Boolean.parseBoolean(data[6]);

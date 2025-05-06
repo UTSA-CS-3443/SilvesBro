@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
     private boolean timerRunning  = false;
     private boolean dewOnCooldown = false;
     private long timeLeft;
+    private ProgressBar happinessBar;
+
+    private Handler happinessHandler;
+    private Runnable happinessDecay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +51,12 @@ public class MainActivity extends AppCompatActivity {
 
         userProfile = new UserProfile();
         userProfile.loadProfile(this);
+        int savedHap = userProfile.getHappinessLvl();
         int savedHatResId = userProfile.getSelectedHatResId();
+        Log.d("MAIN", "onCreate() sees savedHap = " + savedHap);
         WardrobeItem outfit = new WardrobeItem(1, "restored", savedHatResId );
 
-        character = new Character(
-                userProfile.getHappinessLvl(),
-                outfit,
-                userProfile.isSwaggerModeOn()
-        );
+        character = new Character(savedHap, outfit, userProfile.isSwaggerModeOn());
 
         nameDisplay     = findViewById(R.id.name_display);
         countdownTimer  = findViewById(R.id.countdown_timer);
@@ -120,11 +125,37 @@ public class MainActivity extends AppCompatActivity {
         hatTilt.setRepeatMode(ObjectAnimator.REVERSE);
         hatTilt.start();
 
+        happinessBar = findViewById(R.id.happiness_bar);
+        happinessBar.setMax(100);
+        happinessBar.setProgress(savedHap);
+        Log.d("MAIN", "After setProgress, bar.getProgress() = " + happinessBar.getProgress());
+
+        happinessHandler = new Handler(Looper.getMainLooper());
+
+        happinessDecay = new Runnable() {
+            @Override
+            public void run() {
+                // subtract 10 happiness
+                updateHappiness(-10);
+                // schedule again in 5 seconds
+                happinessHandler.postDelayed(this, 5_000);
+            }
+        };
+
+        happinessHandler.postDelayed(happinessDecay, 5_000);
+
         cancelTimerButton.setOnClickListener(v -> cancelTimer());
         pauseTimerButton.setOnClickListener(v -> {
             if (timerRunning) pauseTimer();
             else startTime(timeLeft);
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // avoid leaks: stop the periodic decay when the Activity is gone
+        happinessHandler.removeCallbacks(happinessDecay);
     }
 
     @Override
@@ -159,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
     public void handleFeedButton() {
         if (userProfile.getDrinkCount() > 0 || dewOnCooldown) {
             character.feed();
+            updateHappiness(10);
             userProfile.subtractMountainDew(1);
             animateDewIntoMouth();
             updateDrinkDisplay();
@@ -262,4 +294,24 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .start();
     }
+
+    private void updateHappiness(int delta) {
+        int before = character.getHappinessLvl();
+        Log.d("HAPPY", "Before delta=" + delta + ", happiness = " + before);
+
+        if (delta > 0)
+            character.increaseHappiness(delta);
+        else
+            character.decreaseHappiness(-delta);
+
+        int lvl = character.getHappinessLvl();
+        Log.d("HAPPY", "After change, happiness = " + lvl);
+
+        happinessBar.setProgress(lvl);
+        Log.d("HAPPY", "After bar.setProgress, bar.getProgress() = " + happinessBar.getProgress());
+
+        userProfile.setHappinessLvl(lvl);
+        userProfile.saveProfile(this);
+    }
+
 }
