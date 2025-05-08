@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.Locale;
 
@@ -60,6 +61,13 @@ public class MainActivity extends AppCompatActivity {
 
         updateCharacterSprites(userProfile.getSelectedCharacter());
 
+        ConstraintLayout rootLayout = findViewById(R.id.main);
+        if (userProfile.isSwaggerModeOn()) {
+            rootLayout.setBackgroundResource(R.drawable.background_1);
+        } else {
+            rootLayout.setBackgroundResource(R.drawable.background);
+        }
+
         int savedHap = userProfile.getHappinessLvl();
         int savedHatResId = userProfile.getSelectedHatResId();
 
@@ -101,7 +109,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         if (userProfile.isMusicOn()) {
-            SoundManager.getInstance().playMusic(this, R.raw.bg_music_1, true);
+            int musicRes = userProfile.isSwaggerModeOn() ? R.raw.bg_music_2 : R.raw.bg_music_1;
+            SoundManager.getInstance().playMusic(this, musicRes, true);
         }
 
         if (getIntent().hasExtra("TIMER_DURATION_MILLIS")) {
@@ -173,14 +182,33 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == REQ_SETTINGS && resultCode == RESULT_OK) {
+            boolean previousSwaggerMode = userProfile.isSwaggerModeOn();
+
             userProfile.loadProfile(this);
+
             updateDisplayName(userProfile.getName());
-            if (userProfile.isMusicOn()) SoundManager.getInstance().playMusic(this, R.raw.bg_music_1, true);
-            else                        SoundManager.getInstance().stopMusic();
+
+            if (userProfile.isMusicOn()) {
+                boolean currentSwaggerMode = userProfile.isSwaggerModeOn();
+
+                if (previousSwaggerMode != currentSwaggerMode) {
+                    SoundManager.getInstance().stopMusic();
+                    int newTrack = currentSwaggerMode ? R.raw.bg_music_2 : R.raw.bg_music_1;
+                    SoundManager.getInstance().playMusic(this, newTrack, true);
+                }
+            } else {
+                SoundManager.getInstance().stopMusic();
+            }
+
+            ConstraintLayout rootLayout = findViewById(R.id.main);
+            rootLayout.setBackgroundResource(userProfile.isSwaggerModeOn()
+                    ? R.drawable.background_1
+                    : R.drawable.background);
+
             if (data != null && data.hasExtra("selectedCharacter")) {
-                String characterName = data.getStringExtra("selectedCharacter");
-                userProfile.setSelectedCharacter(characterName);
-                updateCharacterSprites(characterName);
+                String selectedChar = data.getStringExtra("selectedCharacter");
+                userProfile.setSelectedCharacter(selectedChar);
+                updateCharacterSprites(selectedChar);
             }
 
         } else if (requestCode == REQ_WARDROBE && resultCode == RESULT_OK) {
@@ -334,23 +362,26 @@ public class MainActivity extends AppCompatActivity {
         ImageView headBottom = findViewById(R.id.sam_head_bottom);
         ImageView body = findViewById(R.id.sam_body);
 
+        boolean isSwag = userProfile.isSwaggerModeOn();
+
         switch (character) {
             case "Hend Alkitawi":
-                headTop.setImageResource(R.drawable.hend_head_top);
+                headTop.setImageResource(isSwag ? R.drawable.hend_head_top_swag : R.drawable.hend_head_top);
                 headBottom.setImageResource(R.drawable.hend_head_bottom);
                 body.setImageResource(R.drawable.hend_body);
                 break;
             case "Samuel Ang":
-                headTop.setImageResource(R.drawable.ang_head_top);
+                headTop.setImageResource(isSwag ? R.drawable.ang_head_top_swag : R.drawable.ang_head_top);
                 headBottom.setImageResource(R.drawable.ang_head_bottom);
                 body.setImageResource(R.drawable.sam_body);
                 break;
-            default: // "Sam Silvestro"
-                headTop.setImageResource(R.drawable.sam_head_top);
+            default: // Sam Silvestro
+                headTop.setImageResource(isSwag ? R.drawable.sam_head_top_swag : R.drawable.sam_head_top);
                 headBottom.setImageResource(R.drawable.sam_head_bottom);
                 body.setImageResource(R.drawable.sam_body);
                 break;
         }
     }
+
 
 }
