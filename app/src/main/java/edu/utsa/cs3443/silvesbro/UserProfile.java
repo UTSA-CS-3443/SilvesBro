@@ -18,7 +18,8 @@ public class UserProfile {
     private boolean isMusicOn;
     private boolean isSoundOn;
     private boolean isSwaggerMode;
-    private int selectedHatResId;   // new field
+    private int selectedHatResId;
+    private String selectedCharacter;
 
     public UserProfile() {
         name = "Sam";
@@ -28,7 +29,8 @@ public class UserProfile {
         isMusicOn = true;
         isSoundOn = true;
         isSwaggerMode = false;
-        selectedHatResId = R.drawable.blue_party_hat;  // default hat
+        selectedHatResId = R.drawable.blue_party_hat;
+        selectedCharacter = "Sam Silvestro";
     }
 
     public void loadProfile(Context context) {
@@ -55,15 +57,8 @@ public class UserProfile {
                 isMusicOn       = Boolean.parseBoolean(data[4]);
                 isSoundOn       = Boolean.parseBoolean(data[5]);
                 isSwaggerMode   = Boolean.parseBoolean(data[6]);
-                // parse the new hat column if present
-                if (data.length > 7) {
-                    try {
-                        selectedHatResId = Integer.parseInt(data[7]);
-                    } catch (NumberFormatException nfe) {
-                        Log.w("UserProfile", "Invalid hat ID, using default", nfe);
-                        selectedHatResId = R.drawable.blue_party_hat;
-                    }
-                }
+                selectedHatResId = data.length > 7 ? Integer.parseInt(data[7]) : R.drawable.blue_party_hat;
+                selectedCharacter = data.length > 8 ? data[8] : "Sam Silvestro";
             }
             reader.close();
         } catch (Exception e) {
@@ -76,12 +71,8 @@ public class UserProfile {
             OutputStream os = context.openFileOutput("user_profile.csv", Context.MODE_PRIVATE);
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os));
 
-            // write header with new column
-            writer.write("name,total_study_time_minutes,mountain_dew_count,happiness_level,"
-                    + "is_music_on,is_sound_on,is_swagger_mode,selected_hat_res\n");
-
-            // write values
-            writer.write(String.format("%s,%d,%d,%d,%b,%b,%b,%d\n",
+            writer.write("name,total_study_time_minutes,mountain_dew_count,happiness_level,is_music_on,is_sound_on,is_swagger_mode,selected_hat_res,selected_character\n");
+            writer.write(String.format("%s,%d,%d,%d,%b,%b,%b,%d,%s\n",
                     name,
                     totalStudyTime,
                     drinkCount,
@@ -89,7 +80,8 @@ public class UserProfile {
                     isMusicOn,
                     isSoundOn,
                     isSwaggerMode,
-                    selectedHatResId
+                    selectedHatResId,
+                    selectedCharacter
             ));
 
             writer.flush();
@@ -123,8 +115,13 @@ public class UserProfile {
 
     public boolean isSwaggerModeOn() { return isSwaggerMode; }
     public void setSwaggerMode(boolean swaggerMode) { this.isSwaggerMode = swaggerMode; }
-
-    // new getter & setter for hat
     public int getSelectedHatResId() { return selectedHatResId; }
     public void setSelectedHatResId(int resId) { this.selectedHatResId = resId; }
+    public String getSelectedCharacter() {
+        return selectedCharacter;
+    }
+
+    public void setSelectedCharacter(String character) {
+        this.selectedCharacter = character;
+    }
 }

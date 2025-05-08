@@ -51,8 +51,18 @@ public class MainActivity extends AppCompatActivity {
 
         userProfile = new UserProfile();
         userProfile.loadProfile(this);
+
+        String selectedCharacter = userProfile.getSelectedCharacter();
+
+        ImageView headTop = findViewById(R.id.sam_head_top);
+        ImageView headBottom = findViewById(R.id.sam_head_bottom);
+        ImageView body = findViewById(R.id.sam_body);
+
+        updateCharacterSprites(userProfile.getSelectedCharacter());
+
         int savedHap = userProfile.getHappinessLvl();
         int savedHatResId = userProfile.getSelectedHatResId();
+
         Log.d("MAIN", "onCreate() sees savedHap = " + savedHap);
         WardrobeItem outfit = new WardrobeItem(1, "restored", savedHatResId );
 
@@ -167,6 +177,11 @@ public class MainActivity extends AppCompatActivity {
             updateDisplayName(userProfile.getName());
             if (userProfile.isMusicOn()) SoundManager.getInstance().playMusic(this, R.raw.bg_music_1, true);
             else                        SoundManager.getInstance().stopMusic();
+            if (data != null && data.hasExtra("selectedCharacter")) {
+                String characterName = data.getStringExtra("selectedCharacter");
+                userProfile.setSelectedCharacter(characterName);
+                updateCharacterSprites(characterName);
+            }
 
         } else if (requestCode == REQ_WARDROBE && resultCode == RESULT_OK) {
             if (data != null && data.hasExtra("selectedHat")) {
@@ -312,6 +327,30 @@ public class MainActivity extends AppCompatActivity {
 
         userProfile.setHappinessLvl(lvl);
         userProfile.saveProfile(this);
+    }
+
+    private void updateCharacterSprites(String character) {
+        ImageView headTop = findViewById(R.id.sam_head_top);
+        ImageView headBottom = findViewById(R.id.sam_head_bottom);
+        ImageView body = findViewById(R.id.sam_body);
+
+        switch (character) {
+            case "Hend Alkitawi":
+                headTop.setImageResource(R.drawable.hend_head_top);
+                headBottom.setImageResource(R.drawable.hend_head_bottom);
+                body.setImageResource(R.drawable.hend_body);
+                break;
+            case "Samuel Ang":
+                headTop.setImageResource(R.drawable.ang_head_top);
+                headBottom.setImageResource(R.drawable.ang_head_bottom);
+                body.setImageResource(R.drawable.sam_body);
+                break;
+            default: // "Sam Silvestro"
+                headTop.setImageResource(R.drawable.sam_head_top);
+                headBottom.setImageResource(R.drawable.sam_head_bottom);
+                body.setImageResource(R.drawable.sam_body);
+                break;
+        }
     }
 
 }
