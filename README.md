@@ -137,3 +137,5 @@ All source code is located in the main branch of this repository.
 This app was built for educational purposes as part of the UTSA Application Programming course.
 We do not claim ownership over any likenesses used in parody.
 The character of Mr. Silvestro is used lovingly and respectfully.
+
+Disclaimer: We used the assistance of LLMs (ChatGPT) solely for guidance, combining its suggestions with concepts learned in class, for example, on topics such as file input/output, and project structure. To overall make our workflow more productive and as a tool.
