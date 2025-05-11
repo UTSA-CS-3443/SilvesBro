@@ -22,7 +22,6 @@ public class TaskListActivity extends AppCompatActivity {
 
         Button addTaskButton = findViewById(R.id.addTaskButton);
         Button exitButton = findViewById(R.id.exitButton);
-        //completeTaskButton = findViewById(R.id.)
         taskList = new TaskList();
         taskList.loadTasks(this);
 
@@ -32,12 +31,13 @@ public class TaskListActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // remove/complete task
+        // finds task based on position in recycler view by using the adapter
         adapter.setOnItemClickListener(new TaskRecyclerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 taskList.getTaskList().remove(position);
                 adapter.notifyItemRemoved(position);
-                //Toast.makeText(TaskListActivity.this, "Good job student!", Toast.LENGTH_SHORT).show();
                 //this removal is only temporary so we need to rewrite the csv in internal memory
                 taskList.saveTasks(TaskListActivity.this);
             }

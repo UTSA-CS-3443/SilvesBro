@@ -21,27 +21,7 @@ public class TaskList {
         this.taskList = new ArrayList<Task>();
     }
 
-    /**
-     * Loads tasks in from CSV
-     */
-    /*public void loadTasks(TaskListActivity activity) {
-        AssetManager manager = activity.getAssets();
-        try {
-            InputStream in = manager.open("tasks.csv");
-            Scanner scnr = new Scanner(in);
-            scnr.nextLine(); // trash line
-            while (scnr.hasNextLine()) {
-                String[] line = scnr.nextLine().split(",");
-                System.out.println(line[0] + line[1] + line[2] + line[3]);
-                Task task = new Task(line[0].trim(), line[1].trim(), line[2].trim(), Boolean.parseBoolean(line[3].trim()));
-                addTask(task);
-            }
-        }
-        catch (Exception e){
-
-        }
-    }*/
-
+    // reads tasks from internal memory and loads into the TaskList arraylist of tasks
     public void loadTasks(Context context) {
         try {
             BufferedReader reader;
@@ -64,6 +44,7 @@ public class TaskList {
         }
     }
 
+    // overwrites/update internal memory csv file with the current TaskList arraylist of tasks
     public void saveTasks(Context context) throws RuntimeException{
         try { // MODE_APPEND TO APPEND OR MODE_PRIVATE TO WRITE ?
             OutputStream outputStream = context.openFileOutput("tasks.csv", Context.MODE_PRIVATE);
@@ -110,7 +91,8 @@ public class TaskList {
         return this.taskList.size();
     }
 
-    // static bc not related to an instance
+    // static bc its not related to an instance
+    // appends one singular task to internal memory
     public static void addTaskToCSV (Context context, Task task) throws RuntimeException  {
         try { // MODE_APPEND TO APPEND OR MODE_PRIVATE TO WRITE ?
             OutputStream outputStream = context.openFileOutput("tasks.csv", Context.MODE_APPEND);

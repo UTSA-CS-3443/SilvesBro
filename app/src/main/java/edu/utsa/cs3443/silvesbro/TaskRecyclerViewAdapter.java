@@ -28,7 +28,7 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
     private ArrayList<Task> taskList;
     private OnItemClickListener listener; //for done
 
-    //for delete functionality
+    //for task complete functionality
     public interface OnItemClickListener{
         void onItemClick(int position);
     }

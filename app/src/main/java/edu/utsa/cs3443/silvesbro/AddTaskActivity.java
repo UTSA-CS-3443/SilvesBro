@@ -47,11 +47,12 @@ public class AddTaskActivity extends AppCompatActivity {
         createTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // making sure task name isnt empty
                 if (inputName.getText().toString().isEmpty()) {
                     Toast.makeText(AddTaskActivity.this, "Invalid input, try again.", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    // random filler ID
+                    // random filler ID, useless
                     task = new Task("9999", inputName.getText().toString(), "", false);
                     TaskList.addTaskToCSV(AddTaskActivity.this, task);
                     Intent intent = new Intent(AddTaskActivity.this, TaskListActivity.class);
@@ -76,6 +77,7 @@ public class AddTaskActivity extends AppCompatActivity {
 
     }
 
+    // date picker
     public void openDialogDate(){
         DatePickerDialog dialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -89,12 +91,14 @@ public class AddTaskActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    // time picker
     public void openDialogTime() {
         TimePickerDialog dialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                 String testString = String.valueOf(hourOfDay) + ":" + String.valueOf(minute);
                 Toast.makeText(AddTaskActivity.this, testString, Toast.LENGTH_SHORT).show();
+                //THIS IS WHERE YOU STORE THE TIME VALUES AND MAKE TIME WORK
             }
         }, 15, 0, true);
 
