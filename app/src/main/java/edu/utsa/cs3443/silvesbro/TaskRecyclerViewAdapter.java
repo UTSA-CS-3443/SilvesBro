@@ -16,14 +16,13 @@ import java.util.ArrayList;
 import edu.utsa.cs3443.silvesbro.models.Task;
 
 /**
- * This class connects our data from EnclosureActivity to the recycler XML file and formats it on the
+ * This class connects our data from TaskListActivity to the recycler XML file and formats it on the
  * screen neatly
  *
  * @author sgx453
  */
 public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerViewAdapter.MyViewHolder>{
 
-    //ArrayList
     private Context context;
     private ArrayList<Task> taskList;
     private OnItemClickListener listener; //for done
@@ -39,7 +38,7 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
 
     /**
      * constructor for the adapter class
-     * @param context, context for EnclosureActivity
+     * @param context, context for TaskListActivity
      * @param taskList, task arraylist
      */
     public TaskRecyclerViewAdapter(Context context, ArrayList<Task> taskList){
@@ -54,7 +53,7 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
      *               an adapter position.
      * @param viewType, The view type of the new View.
      *
-     * @return new Dino_RecyclerViewAdapter.MyViewHolder(view), the inflated layout
+     * @return new TaskRecyclerViewAdapter.MyViewHolder, the inflated layout
      */
     @NonNull
     @Override
@@ -84,7 +83,7 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
     /**
      * this function determines the number of items we want displayed on screen
      *
-     * @return dinos.size(), size of dinosaurs arraylist
+     * @return taskList.size(), size of taskList arraylist
      */
     @Override
     public int getItemCount() {
@@ -95,18 +94,16 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
      * MyViewHolder grabs the views from our recycler layout file, similar to onCreate
      */
     public static class MyViewHolder extends RecyclerView.ViewHolder{
-        private ImageView imageView;
         private TextView name;
         private Button doneButton;
 
         /**
          * constructor for MyViewHolder class
-         * @param itemView, the display of an individual dinosaur
+         * @param itemView, the display of an individual task
          */
         public MyViewHolder(@NonNull View itemView, OnItemClickListener listener) { //listener passed for done button
             super(itemView);
 
-            //imageView = itemView.findViewById(R.id.imageView);
             name = itemView.findViewById(R.id.taskName);
             doneButton = itemView.findViewById(R.id.doneButton);
 
