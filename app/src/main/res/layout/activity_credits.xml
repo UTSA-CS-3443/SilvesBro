@@ -103,12 +103,6 @@
                 android:layout_height="wrap_content"
                 android:text="🎭 Professor Sam Silvestro"
                 android:textSize="18sp"
-                android:textColor="@color/black" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="🎭 Professor Samuel Ang"
-                android:textSize="18sp"
                 android:textColor="@color/black"
                 android:layout_marginBottom="24dp" />
 
@@ -135,7 +129,6 @@
                 android:textSize="18sp"
                 android:textColor="@color/black"
                 android:layout_marginBottom="24dp" />
-
 
             <TextView
                 android:layout_width="wrap_content"
