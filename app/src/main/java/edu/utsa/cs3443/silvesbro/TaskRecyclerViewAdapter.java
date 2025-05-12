@@ -95,18 +95,16 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
      * MyViewHolder grabs the views from our recycler layout file, similar to onCreate
      */
     public static class MyViewHolder extends RecyclerView.ViewHolder{
-        private ImageView imageView;
         private TextView name;
         private Button doneButton;
 
         /**
          * constructor for MyViewHolder class
-         * @param itemView, the display of an individual dinosaur
+         * @param itemView, the display of an individual task
          */
         public MyViewHolder(@NonNull View itemView, OnItemClickListener listener) { //listener passed for done button
             super(itemView);
 
-            //imageView = itemView.findViewById(R.id.imageView);
             name = itemView.findViewById(R.id.taskName);
             doneButton = itemView.findViewById(R.id.doneButton);
 
