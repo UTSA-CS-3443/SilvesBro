@@ -1,6 +1,7 @@
 package edu.utsa.cs3443.silvesbro;
 
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -21,15 +22,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.Locale;
 
-import edu.utsa.cs3443.silvesbro.models.Character;
-import edu.utsa.cs3443.silvesbro.models.UserProfile;
-import edu.utsa.cs3443.silvesbro.models.WardrobeItem;
-
 public class MainActivity extends AppCompatActivity {
     private static final int REQ_SETTINGS  = 1;
     private static final int REQ_WARDROBE = 2;
 
-    private edu.utsa.cs3443.silvesbro.models.Character character;
+    private Character character;
     private UserProfile userProfile;
 
     private TextView nameDisplay;
@@ -158,9 +155,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // subtract 10 happiness
-                updateHappiness(-1);
+                updateHappiness(-10);
                 // schedule again in 5 seconds
-                happinessHandler.postDelayed(this, 10_000);
+                happinessHandler.postDelayed(this, 5_000);
             }
         };
 
