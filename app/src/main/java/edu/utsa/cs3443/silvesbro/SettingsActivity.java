@@ -12,7 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
 import edu.utsa.cs3443.silvesbro.models.UserProfile;
-
+/**
+ * SettingsActivity manages the user's settings in the SilvesBro app.
+ * This includes toggles for music, sound effects, and Swagger Mode,
+ * as well as name and character selection. Updates are saved to
+ * a persistent UserProfile CSV file.
+ */
 public class SettingsActivity extends AppCompatActivity {
 
     private SwitchCompat musicButton;
@@ -25,6 +30,10 @@ public class SettingsActivity extends AppCompatActivity {
     private UserProfile profile = new UserProfile();
     private Spinner characterSpinner;
 
+    /**
+     * Initializes the settings UI and loads user profile data.
+     * @param savedInstanceState The previous saved state (if any).
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +72,9 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Saves user settings to the profile and passes data back to MainActivity.
+     */
     private void saveSettings() {
         String name = nameEdit.getText().toString().trim();
         String selectedChar = characterSpinner.getSelectedItem().toString();
