@@ -163,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
 
         happinessHandler.postDelayed(happinessDecay, 5_000);
 
-        // pause/cancel timer
         cancelTimerButton.setOnClickListener(v -> cancelTimer());
         pauseTimerButton.setOnClickListener(v -> {
             if (timerRunning) pauseTimer();
@@ -231,7 +230,6 @@ public class MainActivity extends AppCompatActivity {
         bottleCount.setText(String.valueOf(userProfile.getDrinkCount()));
     }
 
-    // update necessary data after feeding/attempting to feed character
     public void handleFeedButton() {
         if (userProfile.getDrinkCount() > 0 || dewOnCooldown) {
             character.feed();
@@ -259,14 +257,12 @@ public class MainActivity extends AppCompatActivity {
         nameDisplay.setText(name);
     }
 
-    // method to start the timer
     private void startTime(long duration) {
         countdownTimer.setVisibility(View.VISIBLE);
         timerButtons.setVisibility(View.VISIBLE);
         timerRunning = true;
         pauseTimerButton.setText("Pause");
         timer = new CountDownTimer(duration, 1000) {
-            // update the timer every second
             @Override public void onTick(long millisUntilFinished) {
                 timeLeft = millisUntilFinished;
                 long hrs = (millisUntilFinished / 1000) / 3600;
@@ -275,14 +271,12 @@ public class MainActivity extends AppCompatActivity {
                 String fmt = String.format(Locale.getDefault(), "%02d:%02d:%02d", hrs, mins, secs);
                 countdownTimer.setText(fmt);
             }
-            // handles the timer finishing
             @Override public void onFinish() {
                 countdownTimer.setText("00:00:00");
                 timerRunning = false;
                 Toast.makeText(MainActivity.this, "Time's up!\n+1 Fountain Dude", Toast.LENGTH_SHORT).show();
                 userProfile.addMountainDew(1);
                 updateDrinkDisplay();
-                // leaves the timer up for 5 seconds after completion
                 new Handler().postDelayed(() -> {
                     countdownTimer.setVisibility(View.INVISIBLE);
                     timerButtons.setVisibility(View.INVISIBLE);
@@ -290,13 +284,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }.start();
     }
-    // cancel timer method
+
     private void cancelTimer() {
         if (timer != null) timer.cancel();
         countdownTimer.setVisibility(View.INVISIBLE);
         timerButtons.setVisibility(View.INVISIBLE);
     }
-    // pause timer method
+
     private void pauseTimer() {
         if (timer != null) timer.cancel();
         timerRunning = false;

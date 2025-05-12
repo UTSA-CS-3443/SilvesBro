@@ -36,8 +36,7 @@ public class TimerActivity extends AppCompatActivity {
             @Override
             public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
                 value = Math.round(value);
-                // pass this value to create the timer
-                int intVal = (int)value;
+                int intVal = (int)value; // pass this value to create the timer
                 timeInMinutes = intVal;
                 timerSliderVal.setText(Integer.toString(intVal));
             }
