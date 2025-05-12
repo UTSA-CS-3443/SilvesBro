@@ -1,3 +1,9 @@
 item_id,item_name,image_path
-0,Top Hat,assets/hats/blue_party_hat.png
-1,Sun Hat,assets/hats/yellow_party_hat.png
+0,Blue Party Hat,res/drawable/blue_party_hat.png
+1,Sun Hat,res/drawable/yellow_party_hat.png
+2,Child Hat,res/drawable/child_hat.png
+3,Leprechaun Hat,res/drawable/leprechaun_hat.png
+4,Pirate Hat,res/drawable/pirate_hat.png
+5,Santa Hat,res/drawable/santa_hat.png
+6,Sombrero Hat,res/drawable/sombrero_hat.png
+7,Wizard Hat,res/drawable/wizard_hat.png

@@ -19,6 +19,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Locale;
 
 import edu.utsa.cs3443.silvesbro.models.Character;
@@ -72,10 +75,16 @@ public class MainActivity extends AppCompatActivity {
         }
 
         int savedHap = userProfile.getHappinessLvl();
-        int savedHatResId = userProfile.getSelectedHatResId();
+        int savedHatResId = userProfile.getSelectedHatId();
 
         Log.d("MAIN", "onCreate() sees savedHap = " + savedHap);
-        WardrobeItem outfit = new WardrobeItem(1, "restored", savedHatResId );
+        //WardrobeItem outfit = new WardrobeItem(1, "restored", savedHatResId );
+
+        WardrobeItem hat = loadHatById(userProfile.getSelectedHatId());
+        if (hat == null) {
+            hat = new WardrobeItem(0, "Default", R.drawable.blue_party_hat);
+        }
+        WardrobeItem outfit = hat;
 
         character = new Character(savedHap, outfit, userProfile.isSwaggerModeOn());
 
@@ -89,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
         updateDisplayName(userProfile.getName());
         bottleCount.setText(String.valueOf(userProfile.getDrinkCount()));
-        hatOverlay.setImageResource(savedHatResId);
+        hatOverlay.setImageResource(hat.getImageResource());
         hatOverlay.setVisibility(View.VISIBLE);
 
         ImageButton dewButton = findViewById(R.id.bt_dew);
@@ -216,16 +225,17 @@ public class MainActivity extends AppCompatActivity {
             }
 
         } else if (requestCode == REQ_WARDROBE && resultCode == RESULT_OK) {
-            if (data != null && data.hasExtra("selectedHat")) {
-                int hatResId = data.getIntExtra("selectedHat", R.drawable.blue_party_hat);
+            if (data != null && data.hasExtra("selectedHatId")) {
+                int hatId = data.getIntExtra("selectedHatId", 0);
+                WardrobeItem selectedHat = loadHatById(hatId);
+                if (selectedHat != null) {
+                    hatOverlay.setImageResource(selectedHat.getImageResource());
+                    hatOverlay.setVisibility(View.VISIBLE);
 
-                hatOverlay.setImageResource(hatResId);
-                hatOverlay.setVisibility(View.VISIBLE);
-
-                character.changeOutfit(new WardrobeItem(-1, "selected", hatResId));
-
-                userProfile.setSelectedHatResId(hatResId);
-                userProfile.saveProfile(this);
+                    character.changeOutfit(selectedHat);
+                    userProfile.setSelectedHatId(hatId);
+                    userProfile.saveProfile(this);
+                }
             }
         }
     }
@@ -256,6 +266,30 @@ public class MainActivity extends AppCompatActivity {
             case "wardrobe": target = WardrobeActivity.class; break;
         }
         if (target != null) startActivity(new Intent(this, target));
+    }
+
+    private WardrobeItem loadHatById(int hatId) {
+        try {
+            InputStream is = getResources().openRawResource(R.raw.wardrobe_items);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] tokens = line.split(",");
+                if (tokens.length == 3) {
+                    int id = Integer.parseInt(tokens[0].trim());
+                    if (id == hatId) {
+                        String resName = tokens[2].trim().substring(tokens[2].trim().lastIndexOf("/") + 1).replace(".png", "");
+                        int resId = getResources().getIdentifier(resName, "drawable", getPackageName());
+                        return new WardrobeItem(id, tokens[1].trim(), resId);
+                    }
+                }
+            }
+            reader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void updateDisplayName(String name) {

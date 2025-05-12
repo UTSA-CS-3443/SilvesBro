@@ -42,7 +42,9 @@ public class WardrobeActivity extends AppCompatActivity {
                 if (tokens.length == 3) {
                     int itemId = Integer.parseInt(tokens[0].trim());
                     String name = tokens[1].trim();
-                    int resId = getResources().getIdentifier(tokens[2].trim(), "drawable", getPackageName());
+                    String resName = tokens[2].trim().substring(tokens[2].trim().lastIndexOf("/") + 1).replace(".png", "");
+                    int resId = getResources().getIdentifier(resName, "drawable", getPackageName());
+
 
                     Log.d("WardrobeDebug", "Loaded: " + name + " - ResID: " + resId);
 
@@ -101,7 +103,7 @@ public class WardrobeActivity extends AppCompatActivity {
                 currentItem = item;
 
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("selectedHat", item.getImageResource());
+                resultIntent.putExtra("selectedHatId", item.getItemId());
                 setResult(RESULT_OK, resultIntent);
                 finish();
                 break;
