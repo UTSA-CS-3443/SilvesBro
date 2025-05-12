@@ -33,8 +33,28 @@ public class Task {
         return dueDate;
     }
 
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
+    }
+
     public boolean getIsCompleted() {
         return isCompleted;
     }
+
+    public void setIsCompleted(boolean completed) {
+        isCompleted = completed;
+    }
+
+    public void markComplete() {
+        this.isCompleted = true;
+    }
+
+    public void isOverdue() {
+        //TODO
+    }
+
+    /*public long getTimeRemaining() {
+        //TODO
+    }*/
 
 }

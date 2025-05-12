@@ -18,6 +18,8 @@ import edu.utsa.cs3443.silvesbro.models.TaskList;
 
 public class AddTaskActivity extends AppCompatActivity {
 
+    EditText inputName;
+    EditText inputDate;
     private Task task;
     private TaskList taskList;
 
@@ -28,7 +30,7 @@ public class AddTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_task);
 
         taskList = new TaskList();
-        EditText inputName = findViewById(R.id.nameInput);
+        inputName = findViewById(R.id.nameInput);
         Button createTaskButton = findViewById(R.id.createTaskButton);
 
         createTaskButton.setOnClickListener(new View.OnClickListener() {

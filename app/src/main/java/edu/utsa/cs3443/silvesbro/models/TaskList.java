@@ -47,7 +47,6 @@ public class TaskList {
             OutputStream outputStream = context.openFileOutput("tasks.csv", Context.MODE_PRIVATE);
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
             BufferedWriter writer = new BufferedWriter(outputStreamWriter);
-            // we dont use id, due date, or due date completed. but if it aint broke dont fix it
             writer.write("task_id,task_name,due_date,is_completed\n");
             for (Task task : this.getTaskList()) {
                 writer.write(String.format("%s,%s,%s,%b\n",
@@ -96,7 +95,7 @@ public class TaskList {
             OutputStream outputStream = context.openFileOutput("tasks.csv", Context.MODE_APPEND);
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
             BufferedWriter writer = new BufferedWriter(outputStreamWriter);
-            // we dont use id, due date, or due date completed. but if it aint broke dont fix it
+            //writer.write("name,total_study_time_minutes,mountain_dew_count,happiness_level,is_music_on,is_sound_on,is_swagger_mode\n");
             writer.write(String.format("%s,%s,%s,%b\n",
                     task.getId(), task.getName(), task.getDueDate(), task.getIsCompleted()));
 

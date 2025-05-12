@@ -14,6 +14,7 @@ import edu.utsa.cs3443.silvesbro.models.TaskList;
 public class TaskListActivity extends AppCompatActivity {
 
     private TaskList taskList;
+    Button completeTaskButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
