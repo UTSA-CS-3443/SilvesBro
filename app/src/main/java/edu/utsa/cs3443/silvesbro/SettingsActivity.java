@@ -78,7 +78,6 @@ public class SettingsActivity extends AppCompatActivity {
         result.putExtra("name", name);
         result.putExtra("music", musicButton.isChecked());
         result.putExtra("selectedCharacter", selectedChar);
-        result.putExtra("swaggerMode", swaggerButton.isChecked());
         setResult(RESULT_OK, result);
         finish();
     }
