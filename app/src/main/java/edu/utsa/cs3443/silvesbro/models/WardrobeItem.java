@@ -1,4 +1,4 @@
-package edu.utsa.cs3443.silvesbro;
+package edu.utsa.cs3443.silvesbro.models;
 
 public class WardrobeItem {
     private final int itemId;

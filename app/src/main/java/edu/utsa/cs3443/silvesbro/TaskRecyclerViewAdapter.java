@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import edu.utsa.cs3443.silvesbro.Task;
+import edu.utsa.cs3443.silvesbro.models.Task;
 
 /**
  * This class connects our data from EnclosureActivity to the recycler XML file and formats it on the

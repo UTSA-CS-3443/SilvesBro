@@ -1,4 +1,4 @@
-package edu.utsa.cs3443.silvesbro;
+package edu.utsa.cs3443.silvesbro.models;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+
+import edu.utsa.cs3443.silvesbro.R;
 
 public class UserProfile {
     private String name;

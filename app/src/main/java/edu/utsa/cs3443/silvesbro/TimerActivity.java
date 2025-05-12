@@ -48,9 +48,15 @@ public class TimerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // pass time in milliseconds to main to start timer
                 timeInMilliseconds = timeInMinutes * 60000;
-                Intent intent = new Intent(TimerActivity.this, MainActivity.class);
-                intent.putExtra("TIMER_DURATION_MILLIS", timeInMilliseconds);
-                startActivity(intent);
+                if (timeInMilliseconds == 0) {
+                    Toast.makeText(TimerActivity.this, "Must enter a time!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    System.out.println(timeInMilliseconds);
+                    Intent intent = new Intent(TimerActivity.this, MainActivity.class);
+                    intent.putExtra("TIMER_DURATION_MILLIS", timeInMilliseconds);
+                    startActivity(intent);
+                }
             }
         });
 

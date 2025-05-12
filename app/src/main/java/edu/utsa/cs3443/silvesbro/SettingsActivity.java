@@ -11,6 +11,8 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
+import edu.utsa.cs3443.silvesbro.models.UserProfile;
+
 public class SettingsActivity extends AppCompatActivity {
 
     private SwitchCompat musicButton;
