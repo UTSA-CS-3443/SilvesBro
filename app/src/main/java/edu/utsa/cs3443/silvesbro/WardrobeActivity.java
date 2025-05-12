@@ -17,11 +17,24 @@ import java.util.ArrayList;
 
 import edu.utsa.cs3443.silvesbro.models.WardrobeItem;
 
+/**
+ * WardrobeActivity displays a view of selectable wardrobe items.
+ * Users can pick a hat to equip, which sends the selection back to MainActivity.
+ */
+
 public class WardrobeActivity extends AppCompatActivity {
 
     private ArrayList<WardrobeItem> availableItems = new ArrayList<>();
     private WardrobeItem currentItem;
 
+    /**
+     * Initializes the activity and loads wardrobe items
+     *
+     * @param savedInstanceState If the activity is being re-initialized after
+     *     previously being shut down then this Bundle contains the data it most
+     *     recently supplied in {@link #onSaveInstanceState}.  <b><i>Note: Otherwise it is null.</i></b>
+     *
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +44,9 @@ public class WardrobeActivity extends AppCompatActivity {
         displayItems();
     }
 
+    /**
+     * Reads wardrobe data from CSV and populates availableItems list
+     */
     public void loadWardrobeItems() {
         try {
             InputStream is = getResources().openRawResource(R.raw.wardrobe_items);
@@ -64,6 +80,9 @@ public class WardrobeActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Displays wardrobe items in rows of two using ImageButtons
+     */
     public void displayItems() {
         LinearLayout hatList = findViewById(R.id.hat_list);
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -97,6 +116,11 @@ public class WardrobeActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sets the selected item and returns result to MainActivity
+     *
+     * @param itemID The selected item’s ID
+     */
     public void equipItem(int itemID) {
         for (WardrobeItem item : availableItems) {
             if (item.getItemId() == itemID) {
@@ -111,6 +135,11 @@ public class WardrobeActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Returns list of loaded item
+     *
+     * @return ArrayList of WardrobeItem objects
+     */
     public ArrayList<WardrobeItem> getAvailableItems () {
         return this.availableItems;
     }
