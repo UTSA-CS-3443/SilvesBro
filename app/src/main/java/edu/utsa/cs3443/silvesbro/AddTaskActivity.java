@@ -32,6 +32,8 @@ public class AddTaskActivity extends AppCompatActivity {
         taskList = new TaskList();
         inputName = findViewById(R.id.nameInput);
         Button createTaskButton = findViewById(R.id.createTaskButton);
+        Button dateButton = findViewById(R.id.taskDate);
+        Button timeButton = findViewById(R.id.taskTime);
 
         createTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +51,49 @@ public class AddTaskActivity extends AppCompatActivity {
                 }
             }
         });
+
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialogDate();
+            }
+        });
+
+        timeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openDialogTime();
+            }
+        });
+
+    }
+
+    // date picker
+    public void openDialogDate(){
+        DatePickerDialog dialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String testString = String.valueOf(year) + "/" + String.valueOf(month) + "/" + String.valueOf(dayOfMonth);
+                Toast.makeText(AddTaskActivity.this, testString, Toast.LENGTH_SHORT).show();
+                //THIS IS WHERE YOU STORE THE DATE VALUES AND MAKE DATE WORK
+            }
+        }, 2025, 0, 0);
+
+        dialog.show();
+    }
+
+    // time picker
+    public void openDialogTime() {
+        TimePickerDialog dialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                String testString = String.valueOf(hourOfDay) + ":" + String.valueOf(minute);
+                Toast.makeText(AddTaskActivity.this, testString, Toast.LENGTH_SHORT).show();
+                //THIS IS WHERE YOU STORE THE TIME VALUES AND MAKE TIME WORK
+            }
+        }, 15, 0, true);
+
+        dialog.show();
 
     }
 
