@@ -18,7 +18,7 @@ public class UserProfile {
     private boolean isMusicOn;
     private boolean isSoundOn;
     private boolean isSwaggerMode;
-    private int selectedHatResId;
+    private int selectedHatId;
     private String selectedCharacter;
 
     public UserProfile() {
@@ -29,7 +29,7 @@ public class UserProfile {
         isMusicOn = true;
         isSoundOn = true;
         isSwaggerMode = false;
-        selectedHatResId = R.drawable.blue_party_hat;
+        selectedHatId = R.drawable.blue_party_hat;
         selectedCharacter = "Sam Silvestro";
     }
 
@@ -57,7 +57,7 @@ public class UserProfile {
                 isMusicOn       = Boolean.parseBoolean(data[4]);
                 isSoundOn       = Boolean.parseBoolean(data[5]);
                 isSwaggerMode   = Boolean.parseBoolean(data[6]);
-                selectedHatResId = data.length > 7 ? Integer.parseInt(data[7]) : R.drawable.blue_party_hat;
+                selectedHatId = data.length > 7 ? Integer.parseInt(data[7]) : 0;
                 selectedCharacter = data.length > 8 ? data[8] : "Sam Silvestro";
             }
             reader.close();
@@ -80,7 +80,7 @@ public class UserProfile {
                     isMusicOn,
                     isSoundOn,
                     isSwaggerMode,
-                    selectedHatResId,
+                    selectedHatId,
                     selectedCharacter
             ));
 
@@ -115,8 +115,8 @@ public class UserProfile {
 
     public boolean isSwaggerModeOn() { return isSwaggerMode; }
     public void setSwaggerMode(boolean swaggerMode) { this.isSwaggerMode = swaggerMode; }
-    public int getSelectedHatResId() { return selectedHatResId; }
-    public void setSelectedHatResId(int resId) { this.selectedHatResId = resId; }
+    public int getSelectedHatId() { return selectedHatId; }
+    public void setSelectedHatId(int resId) { this.selectedHatId = resId; }
     public String getSelectedCharacter() {
         return selectedCharacter;
     }

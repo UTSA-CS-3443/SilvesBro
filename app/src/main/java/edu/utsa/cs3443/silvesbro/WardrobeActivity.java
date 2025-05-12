@@ -48,8 +48,6 @@ public class WardrobeActivity extends AppCompatActivity {
                     if (resId != 0) {
                         WardrobeItem item = new WardrobeItem(itemId, name, resId);
                         availableItems.add(item);
-                    } else {
-                        Log.w("WardrobeDebug", "Resource not found for: " + tokens[2].trim());
                     }
                 }
             }
@@ -100,7 +98,7 @@ public class WardrobeActivity extends AppCompatActivity {
                 currentItem = item;
 
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("selectedHat", item.getImageResource());
+                resultIntent.putExtra("selectedHatId", item.getItemId());
                 setResult(RESULT_OK, resultIntent);
                 finish();
                 break;
